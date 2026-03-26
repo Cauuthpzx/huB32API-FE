@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Lock, Monitor, Power, Unlock, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HeartbeatLine } from "@/components/shared/HeartbeatLine";
+import { SmartTooltip } from "@/components/shared/SmartTooltip";
 import { LockDialog } from "@/components/features/LockDialog";
 import { PowerDialog } from "@/components/features/PowerDialog";
 import { useRoomStore } from "@/stores/room.store";
@@ -55,34 +56,40 @@ export function ComputerDetail({ computer }: ComputerDetailProps) {
                 {/* Content */}
                 <div className="relative flex h-full w-full flex-col lg:flex-row">
                     {/* Close button */}
-                    <button
-                        type="button"
-                        aria-label={t("app.close")}
-                        onClick={closeDetail}
-                        className="absolute right-4 top-4 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
-                    >
-                        <X size={20} />
-                    </button>
+                    <SmartTooltip content={t("app.close")} position="left">
+                        <button
+                            type="button"
+                            aria-label={t("app.close")}
+                            onClick={closeDetail}
+                            className="absolute right-4 top-4 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+                    </SmartTooltip>
 
                     {/* Navigation arrows */}
                     {currentIndex > 0 && (
-                        <button
-                            type="button"
-                            aria-label={t("app.back")}
-                            onClick={navigatePrev}
-                            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors lg:left-4"
-                        >
-                            <span className="text-lg">&larr;</span>
-                        </button>
+                        <SmartTooltip content={t("app.back")} position="right">
+                            <button
+                                type="button"
+                                aria-label={t("app.back")}
+                                onClick={navigatePrev}
+                                className="absolute left-4 top-1/2 z-10 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors lg:left-4"
+                            >
+                                <span className="text-lg">&larr;</span>
+                            </button>
+                        </SmartTooltip>
                     )}
                     {currentIndex < computers.length - 1 && (
-                        <button
-                            type="button"
-                            onClick={navigateNext}
-                            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors lg:right-[calc(320px+16px)]"
-                        >
-                            <span className="text-lg">&rarr;</span>
-                        </button>
+                        <SmartTooltip content={t("app.next")} position="left">
+                            <button
+                                type="button"
+                                onClick={navigateNext}
+                                className="absolute right-4 top-1/2 z-10 -translate-y-1/2 flex size-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors lg:right-[calc(320px+16px)]"
+                            >
+                                <span className="text-lg">&rarr;</span>
+                            </button>
+                        </SmartTooltip>
                     )}
 
                     {/* Left: Video area */}
@@ -150,38 +157,44 @@ export function ComputerDetail({ computer }: ComputerDetailProps) {
                                 {t("feature.toolbar")}
                             </p>
                             <div className="flex flex-wrap gap-2">
-                                <Button
-                                    type="button"
-                                    size="sm"
-                                    className="h-8 gap-1.5 text-xs"
-                                    disabled={!isOnline}
-                                    onClick={() => setDialog("lock")}
-                                >
-                                    <Lock size={14} />
-                                    {t("feature.lock.lock")}
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="secondary"
-                                    size="sm"
-                                    className="h-8 gap-1.5 text-xs"
-                                    disabled={!isOnline}
-                                    onClick={() => setDialog("unlock")}
-                                >
-                                    <Unlock size={14} />
-                                    {t("feature.lock.unlock")}
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="secondary"
-                                    size="sm"
-                                    className="h-8 gap-1.5 text-xs bg-red-600/20 text-red-400 hover:bg-red-600/30"
-                                    disabled={!isOnline}
-                                    onClick={() => setDialog("power")}
-                                >
-                                    <Power size={14} />
-                                    {t("feature.power.title")}
-                                </Button>
+                                <SmartTooltip content={t("feature.lock.lock")} position="top">
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        className="h-8 gap-1.5 text-xs"
+                                        disabled={!isOnline}
+                                        onClick={() => setDialog("lock")}
+                                    >
+                                        <Lock size={14} />
+                                        {t("feature.lock.lock")}
+                                    </Button>
+                                </SmartTooltip>
+                                <SmartTooltip content={t("feature.lock.unlock")} position="top">
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="sm"
+                                        className="h-8 gap-1.5 text-xs"
+                                        disabled={!isOnline}
+                                        onClick={() => setDialog("unlock")}
+                                    >
+                                        <Unlock size={14} />
+                                        {t("feature.lock.unlock")}
+                                    </Button>
+                                </SmartTooltip>
+                                <SmartTooltip content={t("feature.power.title")} position="top">
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="sm"
+                                        className="h-8 gap-1.5 text-xs bg-red-600/20 text-red-400 hover:bg-red-600/30"
+                                        disabled={!isOnline}
+                                        onClick={() => setDialog("power")}
+                                    >
+                                        <Power size={14} />
+                                        {t("feature.power.title")}
+                                    </Button>
+                                </SmartTooltip>
                             </div>
                         </div>
 

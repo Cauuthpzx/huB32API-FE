@@ -78,27 +78,29 @@ export function AppSidebar() {
 
             {/* Arrow toggle — only when not pinned */}
             {!sidebarPinned && (
-                <button
-                    type="button"
-                    aria-label={isVisible ? t("tooltip.closeSidebar") : t("tooltip.openSidebar")}
-                    onClick={() => setHoverOpen((o) => !o)}
-                    className={cn(
-                        "fixed top-1/2 z-[var(--z-overlay)] -translate-y-1/2",
-                        "flex h-20 w-5 items-center justify-center",
-                        "rounded-r-md border border-l-0",
-                        "bg-[var(--bg-secondary)] border-[var(--border-default)]",
-                        "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
-                        "transition-all duration-200",
-                        isVisible ? "left-[220px]" : "left-0",
-                    )}
-                >
-                    <ChevronRight
+                <SmartTooltip content={isVisible ? t("tooltip.closeSidebar") : t("tooltip.openSidebar")} position="right">
+                    <button
+                        type="button"
+                        aria-label={isVisible ? t("tooltip.closeSidebar") : t("tooltip.openSidebar")}
+                        onClick={() => setHoverOpen((o) => !o)}
                         className={cn(
-                            "size-4 transition-transform duration-200",
-                            isVisible && "rotate-180",
+                            "fixed top-1/2 z-[var(--z-overlay)] -translate-y-1/2",
+                            "flex h-20 w-5 items-center justify-center",
+                            "rounded-r-md border border-l-0",
+                            "bg-[var(--bg-secondary)] border-[var(--border-default)]",
+                            "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
+                            "transition-all duration-200",
+                            isVisible ? "left-[220px]" : "left-0",
                         )}
-                    />
-                </button>
+                    >
+                        <ChevronRight
+                            className={cn(
+                                "size-4 transition-transform duration-200",
+                                isVisible && "rotate-180",
+                            )}
+                        />
+                    </button>
+                </SmartTooltip>
             )}
 
             {/* Backdrop — only for hover mode */}
@@ -226,34 +228,38 @@ export function AppSidebar() {
                         className="grid h-12 border-t border-[var(--border-default)]"
                         style={{ gridTemplateColumns: user?.role === "admin" ? "1fr 1fr 1fr" : "1fr 1fr" }}
                     >
-                        <button
-                            type="button"
-                            aria-label={t("header.language")}
-                            onClick={() => {
-                                const idx = LANG_CYCLE.indexOf(i18n.language as typeof LANG_CYCLE[number]);
-                                const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
-                                i18n.changeLanguage(next);
-                            }}
-                            className="flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors border-r border-[var(--border-default)]"
-                        >
-                            <Languages size={16} />
-                            <span className="text-[10px]">
-                                {LANG_LABELS[i18n.language] ?? t("header.language")}
-                            </span>
-                        </button>
+                        <SmartTooltip content={t("header.language")} position="top">
+                            <button
+                                type="button"
+                                aria-label={t("header.language")}
+                                onClick={() => {
+                                    const idx = LANG_CYCLE.indexOf(i18n.language as typeof LANG_CYCLE[number]);
+                                    const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
+                                    i18n.changeLanguage(next);
+                                }}
+                                className="flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors border-r border-[var(--border-default)]"
+                            >
+                                <Languages size={16} />
+                                <span className="text-[10px]">
+                                    {LANG_LABELS[i18n.language] ?? t("header.language")}
+                                </span>
+                            </button>
+                        </SmartTooltip>
 
                         <ThemePicker isAdmin={user?.role === "admin"} />
 
                         {user?.role === "admin" && (
-                            <button
-                                type="button"
-                                aria-label={t("sidebar.admin")}
-                                onClick={() => { setHoverOpen(false); navigate("/admin"); }}
-                                className="flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
-                            >
-                                <Shield size={16} />
-                                <span className="text-[10px]">{t("sidebar.admin")}</span>
-                            </button>
+                            <SmartTooltip content={t("sidebar.admin")} position="top">
+                                <button
+                                    type="button"
+                                    aria-label={t("sidebar.admin")}
+                                    onClick={() => { setHoverOpen(false); navigate("/admin"); }}
+                                    className="flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
+                                >
+                                    <Shield size={16} />
+                                    <span className="text-[10px]">{t("sidebar.admin")}</span>
+                                </button>
+                            </SmartTooltip>
                         )}
                     </div>
                 </div>

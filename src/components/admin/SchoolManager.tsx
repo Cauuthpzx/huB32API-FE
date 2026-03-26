@@ -13,6 +13,7 @@ import {
     AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
     AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { SmartTooltip } from "@/components/shared/SmartTooltip";
 import { DataTable, type Column } from "./DataTable";
 import { schoolsApi } from "@/api/schools.api";
 import type { SchoolResponse } from "@/api/types";
@@ -88,12 +89,16 @@ export function SchoolManager() {
             header: "",
             render: (r) => (
                 <div className="flex gap-1">
-                    <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(e) => { e.stopPropagation(); openEdit(r); }}>
-                        <Pencil size={14} />
-                    </Button>
-                    <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-red-400 hover:text-red-300" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
-                        <Trash2 size={14} />
-                    </Button>
+                    <SmartTooltip content={t("app.edit")} position="top">
+                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(e) => { e.stopPropagation(); openEdit(r); }}>
+                            <Pencil size={14} />
+                        </Button>
+                    </SmartTooltip>
+                    <SmartTooltip content={t("app.delete")} position="top">
+                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-red-400 hover:text-red-300" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
+                            <Trash2 size={14} />
+                        </Button>
+                    </SmartTooltip>
                 </div>
             ),
         },

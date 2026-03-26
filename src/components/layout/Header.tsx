@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useRoomStore } from "@/stores/room.store";
 import { HeartbeatLine } from "@/components/shared/HeartbeatLine";
+import { SmartTooltip } from "@/components/shared/SmartTooltip";
 import { Monitor, Search } from "lucide-react";
 
 export function Header() {
@@ -47,17 +48,19 @@ export function Header() {
 
             {/* Center: search — absolute center of entire header */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] px-4">
-                <div className="relative">
-                    <Search
-                        size={14}
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]"
-                    />
-                    <input
-                        type="text"
-                        placeholder={t("app.search")}
-                        className="h-8 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] pl-8 pr-3 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-disabled)] focus:border-[var(--accent-blue)] focus:outline-none"
-                    />
-                </div>
+                <SmartTooltip content={t("tooltip.search")} position="bottom">
+                    <div className="relative">
+                        <Search
+                            size={14}
+                            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]"
+                        />
+                        <input
+                            type="text"
+                            placeholder={t("app.search")}
+                            className="h-8 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] pl-8 pr-3 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-disabled)] focus:border-[var(--accent-blue)] focus:outline-none"
+                        />
+                    </div>
+                </SmartTooltip>
             </div>
         </header>
     );
