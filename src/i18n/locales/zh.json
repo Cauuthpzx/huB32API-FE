@@ -41,7 +41,9 @@
     "online": "{{count}}台在线",
     "offline": "{{count}}台离线",
     "noRooms": "未分配教室",
-    "admin": "管理"
+    "admin": "管理",
+    "pin": "固定侧栏",
+    "unpin": "取消固定"
   },
   "header": {
     "role": {

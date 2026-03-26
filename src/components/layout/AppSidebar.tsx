@@ -9,10 +9,14 @@ import {
     ChevronRight,
     LogOut,
     Monitor,
+    PanelLeft,
+    PanelLeftClose,
     User,
 } from "lucide-react";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { cn } from "@/lib/utils";
+
+const SIDEBAR_W = 240;
 
 export function AppSidebar() {
     const { t } = useTranslation();
@@ -22,17 +26,23 @@ export function AppSidebar() {
     const selectedLocationId = useRoomStore((s) => s.selectedLocationId);
     const selectLocation = useRoomStore((s) => s.selectLocation);
     const computers = useRoomStore((s) => s.computers);
+    const sidebarPinned = useRoomStore((s) => s.sidebarPinned);
+    const togglePin = useRoomStore((s) => s.togglePin);
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [hoverOpen, setHoverOpen] = useState(false);
+
+    // Sidebar is visible when pinned OR hovered
+    const isVisible = sidebarPinned || hoverOpen;
 
     const handleSelectRoom = useCallback(
         async (id: string) => {
             await selectLocation(id);
-            if (window.innerWidth < 768) {
-                setIsOpen(false);
+            // Auto-close hover on mobile (not pinned)
+            if (!sidebarPinned && window.innerWidth < 768) {
+                setHoverOpen(false);
             }
         },
-        [selectLocation],
+        [selectLocation, sidebarPinned],
     );
 
     const onlineCount = (locationId: string) => {
@@ -43,67 +53,94 @@ export function AppSidebar() {
 
     return (
         <>
-            {/* Bug 1 fix: Wide invisible hover zone (40px) along left edge */}
-            {!isOpen && (
+            {/* Hover trigger zone — only when not pinned and not hovered */}
+            {!isVisible && (
                 <div
                     className="fixed left-0 top-0 z-[var(--z-overlay)] h-full w-10"
-                    onMouseEnter={() => setIsOpen(true)}
+                    onMouseEnter={() => setHoverOpen(true)}
                 />
             )}
 
-            {/* Bug 2 fix: Tall vertical trigger bar (80px × 20px), centered left edge */}
-            <button
-                onClick={() => setIsOpen((o) => !o)}
-                className={cn(
-                    "fixed top-1/2 z-[var(--z-overlay)] -translate-y-1/2",
-                    "flex h-20 w-5 items-center justify-center",
-                    "rounded-r-md border border-l-0",
-                    "bg-[#141416] border-[#2A2A2E]",
-                    "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
-                    "transition-all duration-200",
-                    isOpen ? "left-[220px]" : "left-0",
-                )}
-            >
-                <ChevronRight
+            {/* Arrow toggle — only when not pinned */}
+            {!sidebarPinned && (
+                <button
+                    onClick={() => setHoverOpen((o) => !o)}
                     className={cn(
-                        "size-4 transition-transform duration-200",
-                        isOpen && "rotate-180",
+                        "fixed top-1/2 z-[var(--z-overlay)] -translate-y-1/2",
+                        "flex h-20 w-5 items-center justify-center",
+                        "rounded-r-md border border-l-0",
+                        "bg-[#141416] border-[#2A2A2E]",
+                        "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
+                        "transition-all duration-200",
+                        isVisible ? `left-[${SIDEBAR_W}px]` : "left-0",
                     )}
-                />
-            </button>
+                >
+                    <ChevronRight
+                        className={cn(
+                            "size-4 transition-transform duration-200",
+                            isVisible && "rotate-180",
+                        )}
+                    />
+                </button>
+            )}
 
-            {/* Backdrop — click to close */}
-            {isOpen && (
+            {/* Backdrop — only for hover mode (not pinned), click to close */}
+            {hoverOpen && !sidebarPinned && (
                 <div
                     className="fixed inset-0 z-[calc(var(--z-overlay)-1)]"
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => setHoverOpen(false)}
                 />
             )}
 
             {/* Sidebar panel */}
             <aside
+                style={{ width: SIDEBAR_W }}
                 className={cn(
-                    "fixed left-0 top-0 z-[var(--z-overlay)] h-full w-[220px]",
+                    "fixed left-0 top-0 h-full",
+                    sidebarPinned ? "z-[var(--z-sticky)]" : "z-[var(--z-overlay)]",
                     "bg-[var(--bg-secondary)] border-r border-[var(--border-default)]",
                     "flex flex-col",
                     "transition-transform duration-200 ease-out",
-                    isOpen ? "translate-x-0" : "-translate-x-[220px]",
+                    isVisible ? "translate-x-0" : `-translate-x-[${SIDEBAR_W}px]`,
                 )}
-                onMouseLeave={() => setIsOpen(false)}
+                onMouseLeave={() => {
+                    if (!sidebarPinned) setHoverOpen(false);
+                }}
             >
-                {/* User info */}
-                <div className="flex items-center gap-3 px-4 py-4">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--bg-hover)]">
-                        <User className="size-4 text-[var(--text-secondary)]" />
+                {/* Top bar: user info + pin button */}
+                <div className="flex items-center justify-between px-4 py-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--bg-hover)]">
+                            <User className="size-4 text-[var(--text-secondary)]" />
+                        </div>
+                        <div className="min-w-0">
+                            <p className="truncate text-sm font-medium text-[var(--text-primary)]">
+                                {user?.sub}
+                            </p>
+                            <p className="text-xs text-[var(--text-tertiary)]">
+                                {t("header.role." + (user?.role ?? "teacher"))}
+                            </p>
+                        </div>
                     </div>
-                    <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-[var(--text-primary)]">
-                            {user?.sub}
-                        </p>
-                        <p className="text-xs text-[var(--text-tertiary)]">
-                            {t("header.role." + (user?.role ?? "teacher"))}
-                        </p>
-                    </div>
+
+                    {/* Pin button */}
+                    <button
+                        onClick={togglePin}
+                        title={sidebarPinned ? t("sidebar.unpin") : t("sidebar.pin")}
+                        className={cn(
+                            "flex size-7 shrink-0 items-center justify-center rounded-md",
+                            "transition-colors duration-100",
+                            sidebarPinned
+                                ? "bg-[var(--accent-subtle)] text-[var(--accent-blue)]"
+                                : "text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
+                        )}
+                    >
+                        {sidebarPinned ? (
+                            <PanelLeftClose size={16} />
+                        ) : (
+                            <PanelLeft size={16} />
+                        )}
+                    </button>
                 </div>
 
                 <Separator />
