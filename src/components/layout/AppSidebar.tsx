@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRoomStore } from "@/stores/room.store";
@@ -9,6 +10,8 @@ import {
     ChevronRight,
     LogOut,
     Monitor,
+    Settings,
+    Shield,
     User,
 } from "lucide-react";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
@@ -16,6 +19,7 @@ import { cn } from "@/lib/utils";
 
 export function AppSidebar() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const user = useAuthStore((s) => s.user);
     const logout = useAuthStore((s) => s.logout);
     const locations = useRoomStore((s) => s.locations);
@@ -91,23 +95,6 @@ export function AppSidebar() {
                 )}
                 onMouseLeave={() => setIsOpen(false)}
             >
-                {/* User info */}
-                <div className="flex items-center gap-3 px-4 py-4">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--bg-hover)]">
-                        <User className="size-4 text-[var(--text-secondary)]" />
-                    </div>
-                    <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-[var(--text-primary)]">
-                            {user?.sub}
-                        </p>
-                        <p className="text-xs text-[var(--text-tertiary)]">
-                            {t("header.role." + (user?.role ?? "teacher"))}
-                        </p>
-                    </div>
-                </div>
-
-                <Separator />
-
                 {/* Room list */}
                 <div className="flex-1 overflow-y-auto px-2 py-2">
                     <p className="px-2 py-1 text-xs font-medium uppercase text-[var(--text-tertiary)]">
@@ -144,17 +131,57 @@ export function AppSidebar() {
 
                 <Separator />
 
-                {/* Bottom actions */}
-                <div className="space-y-1 px-2 py-2">
-                    <LanguageSwitcher />
-                    <Button
-                        variant="ghost"
-                        className="w-full justify-start gap-2 text-[var(--text-secondary)]"
-                        onClick={logout}
-                    >
-                        <LogOut className="size-4" />
-                        {t("auth.logout")}
-                    </Button>
+                {/* Account + actions */}
+                <div className="px-3 py-3">
+                    {/* Avatar + name + role */}
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--bg-hover)]">
+                            <User className="size-4 text-[var(--text-secondary)]" />
+                        </div>
+                        <div className="min-w-0">
+                            <p className="truncate text-sm font-medium text-[var(--text-primary)]">
+                                {user?.sub}
+                            </p>
+                            <p className="text-xs text-[var(--text-tertiary)]">
+                                {t("header.role." + (user?.role ?? "teacher"))}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="space-y-0.5">
+                        <LanguageSwitcher />
+                        <Button
+                            variant="ghost"
+                            className="w-full justify-start gap-2 text-[var(--text-secondary)]"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <Settings className="size-4" />
+                            {t("header.settings")}
+                        </Button>
+
+                        {user?.role === "admin" && (
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start gap-2 text-[var(--text-secondary)]"
+                                onClick={() => { setIsOpen(false); navigate("/admin"); }}
+                            >
+                                <Shield className="size-4" />
+                                {t("sidebar.admin")}
+                            </Button>
+                        )}
+
+                        <Separator className="my-1" />
+
+                        <Button
+                            variant="ghost"
+                            className="w-full justify-start gap-2 text-[var(--danger)] hover:text-[var(--danger)] hover:bg-[var(--danger-subtle)]"
+                            onClick={logout}
+                        >
+                            <LogOut className="size-4" />
+                            {t("auth.logout")}
+                        </Button>
+                    </div>
                 </div>
             </aside>
         </>
