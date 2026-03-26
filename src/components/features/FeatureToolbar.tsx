@@ -54,7 +54,7 @@ function ToolbarBtn({ icon, label, onClick, disabled, variant = "default" }: Too
                 className={cn(
                     "flex size-10 shrink-0 items-center justify-center rounded-md p-0 transition-colors active:scale-95",
                     styles[variant],
-                    disabled && "opacity-40 cursor-not-allowed pointer-events-none",
+                    disabled && "opacity-40 cursor-not-allowed",
                 )}
             >
                 {icon}

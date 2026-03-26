@@ -73,16 +73,16 @@ function Arrow({ placement }: { placement: "top" | "bottom" | "left" | "right" }
     const base: React.CSSProperties = { position: "absolute", width: 0, height: 0 };
 
     const outer: Record<string, React.CSSProperties> = {
-        top:    { ...base, bottom: -s, left: "50%", transform: "translateX(-50%)", borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderTop: `${s}px solid var(--border-strong)` },
-        bottom: { ...base, top: -s, left: "50%", transform: "translateX(-50%)", borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderBottom: `${s}px solid var(--border-strong)` },
-        left:   { ...base, right: -s, top: "50%", transform: "translateY(-50%)", borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderLeft: `${s}px solid var(--border-strong)` },
-        right:  { ...base, left: -s, top: "50%", transform: "translateY(-50%)", borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderRight: `${s}px solid var(--border-strong)` },
+        top:    { ...base, bottom: -s, left: "50%", transform: "translateX(-50%)", borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderTop: `${s}px solid #3A3A40` },
+        bottom: { ...base, top: -s, left: "50%", transform: "translateX(-50%)", borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderBottom: `${s}px solid #3A3A40` },
+        left:   { ...base, right: -s, top: "50%", transform: "translateY(-50%)", borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderLeft: `${s}px solid #3A3A40` },
+        right:  { ...base, left: -s, top: "50%", transform: "translateY(-50%)", borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderRight: `${s}px solid #3A3A40` },
     };
     const inner: Record<string, React.CSSProperties> = {
-        top:    { position: "absolute", bottom: 1, left: -s, width: 0, height: 0, borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderTop: `${s}px solid var(--bg-elevated)` },
-        bottom: { position: "absolute", top: 1, left: -s, width: 0, height: 0, borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderBottom: `${s}px solid var(--bg-elevated)` },
-        left:   { position: "absolute", right: 1, top: -s, width: 0, height: 0, borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderLeft: `${s}px solid var(--bg-elevated)` },
-        right:  { position: "absolute", left: 1, top: -s, width: 0, height: 0, borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderRight: `${s}px solid var(--bg-elevated)` },
+        top:    { position: "absolute", bottom: 1, left: -s, width: 0, height: 0, borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderTop: `${s}px solid #1C1C1F` },
+        bottom: { position: "absolute", top: 1, left: -s, width: 0, height: 0, borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderBottom: `${s}px solid #1C1C1F` },
+        left:   { position: "absolute", right: 1, top: -s, width: 0, height: 0, borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderLeft: `${s}px solid #1C1C1F` },
+        right:  { position: "absolute", left: 1, top: -s, width: 0, height: 0, borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderRight: `${s}px solid #1C1C1F` },
     };
     return <div style={outer[placement]}><div style={inner[placement]} /></div>;
 }
@@ -177,10 +177,10 @@ export function SmartTooltip({
                             maxWidth: interactive ? 320 : 240,
                             padding: "6px 12px",
                             borderRadius: 8,
-                            border: "1px solid var(--border-strong)",
-                            background: "var(--bg-elevated)",
+                            border: "1px solid #3A3A40",
+                            background: "#1C1C1F",
                             boxShadow: "0 4px 16px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.2)",
-                            color: "var(--text-primary)",
+                            color: "#FAFAFA",
                             fontSize: 12,
                             lineHeight: 1.4,
                             wordWrap: "break-word",
