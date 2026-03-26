@@ -125,13 +125,8 @@ export function AppSidebar() {
                     </button>
                 </div>
 
-                {/* ---- MIDDLE: spacer + rooms (flex:1, scrollable) ---- */}
-                <div className="flex flex-1 flex-col overflow-y-auto">
-                    {/* Spacer pushes rooms down */}
-                    <div className="flex-1" />
-
-                    {/* Room list */}
-                    <div className="px-2 pb-2">
+                {/* ---- MIDDLE: rooms right below logo (flex:1, scrollable) ---- */}
+                <div className="flex-1 overflow-y-auto px-2 py-2">
                         <p className="px-2 py-1 text-xs font-medium uppercase text-[var(--text-tertiary)]">
                             {t("sidebar.rooms")}
                         </p>
@@ -162,10 +157,6 @@ export function AppSidebar() {
                                 </button>
                             ))
                         )}
-                    </div>
-
-                    {/* Small spacer below rooms */}
-                    <div className="h-4 shrink-0" />
                 </div>
 
                 {/* ---- BOTTOM: Account + 3 action columns ---- */}
