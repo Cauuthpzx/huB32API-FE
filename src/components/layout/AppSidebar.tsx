@@ -47,7 +47,7 @@ export function AppSidebar() {
     );
 
     const onlineCount = (locationId: string) => {
-        if (locationId !== selectedLocationId) return null;
+        if (locationId !== selectedLocationId || !Array.isArray(computers)) return null;
         const online = computers.filter((c) => c.state !== "offline").length;
         return `${online}/${computers.length}`;
     };
