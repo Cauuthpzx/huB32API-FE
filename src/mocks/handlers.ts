@@ -21,7 +21,7 @@ import type {
     FeatureControlRequest,
 } from "@/api/types";
 
-const API = import.meta.env.VITE_API_URL as string;
+const API = ""; // handlers use relative paths — MSW intercepts on same origin
 
 // ---- Auth guard helper ----
 
