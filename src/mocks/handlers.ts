@@ -493,4 +493,11 @@ export const handlers = [
     http.get(`${API}/health`, async () => {
         return HttpResponse.json({ status: "ok" });
     }),
+
+    // ================================================================
+    // CATCH-ALL — prevent passthrough to non-existent server
+    // ================================================================
+    http.all("*", () => {
+        return new HttpResponse(null, { status: 200 });
+    }),
 ];

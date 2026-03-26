@@ -4,4 +4,7 @@ import { handlers } from "./handlers";
 export const worker = setupWorker(...handlers);
 
 export const startWorker = () =>
-    worker.start({ onUnhandledRequest: "bypass" });
+    worker.start({
+        onUnhandledRequest: "bypass",
+        quiet: true,
+    });
