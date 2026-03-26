@@ -4,6 +4,7 @@ import {
     useCallback,
     useEffect,
     type ReactNode,
+    type RefCallback,
 } from "react";
 import { createPortal } from "react-dom";
 
@@ -124,7 +125,7 @@ export function SmartTooltip({
     const [visible, setVisible] = useState(false);
     const [pos, setPos] = useState<TooltipPos | null>(null);
     const [animating, setAnimating] = useState(false);
-    const triggerRef = useRef<HTMLSpanElement>(null);
+    const triggerRef = useRef<HTMLElement | null>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
     const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -146,8 +147,36 @@ export function SmartTooltip({
         timerRef.current = setTimeout(hide, 150);
     }, [hide]);
 
+    // Attach native DOM listeners to the first child element
+    const showRef = useRef(show);
+    const hideRef = useRef(interactive ? hideDelayed : hide);
+    showRef.current = show;
+    hideRef.current = interactive ? hideDelayed : hide;
+
+    const setTriggerRef: RefCallback<HTMLElement> = useCallback((node) => {
+        // Cleanup old listeners
+        if (triggerRef.current) {
+            triggerRef.current.removeEventListener("mouseenter", handleEnter);
+            triggerRef.current.removeEventListener("mouseleave", handleLeave);
+        }
+        triggerRef.current = node;
+        if (node) {
+            node.addEventListener("mouseenter", handleEnter);
+            node.addEventListener("mouseleave", handleLeave);
+        }
+    }, []);
+
+    function handleEnter() { showRef.current(); }
+    function handleLeave() { hideRef.current(); }
+
     useEffect(() => {
-        return () => clearTimeout(timerRef.current);
+        return () => {
+            clearTimeout(timerRef.current);
+            if (triggerRef.current) {
+                triggerRef.current.removeEventListener("mouseenter", handleEnter);
+                triggerRef.current.removeEventListener("mouseleave", handleLeave);
+            }
+        };
     }, []);
 
     useEffect(() => {
@@ -159,12 +188,7 @@ export function SmartTooltip({
 
     return (
         <>
-            <span
-                ref={triggerRef}
-                onMouseEnter={show}
-                onMouseLeave={interactive ? hideDelayed : hide}
-                style={{ display: "inline-flex" }}
-            >
+            <span ref={setTriggerRef} style={{ display: "contents" }}>
                 {children}
             </span>
             {visible &&
