@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRoomStore } from "@/stores/room.store";
@@ -26,6 +27,7 @@ const LANG_LABELS: Record<string, string> = { vi: "Tiếng Việt", en: "English
 export function AppSidebar() {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
     const user = useAuthStore((s) => s.user);
     const logout = useAuthStore((s) => s.logout);
     const isLoadingLocations = useRoomStore((s) => s.isLoadingLocations);
@@ -42,11 +44,15 @@ export function AppSidebar() {
     const handleSelectRoom = useCallback(
         async (id: string) => {
             await selectLocation(id);
+            // If on admin page, navigate back to dashboard
+            if (location.pathname === "/admin") {
+                navigate("/dashboard");
+            }
             if (!sidebarPinned && window.innerWidth < 768) {
                 setHoverOpen(false);
             }
         },
-        [selectLocation, sidebarPinned],
+        [selectLocation, sidebarPinned, location.pathname, navigate],
     );
 
     const onlineCount = (locationId: string) => {
