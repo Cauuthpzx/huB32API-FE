@@ -10,6 +10,7 @@ interface AuthState {
     token: string | null;
     user: AuthUser | null;
     isAuthenticated: boolean;
+    isLoading: boolean;
     login: (token: string) => void;
     logout: () => void;
     initialize: () => void;
@@ -31,6 +32,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     token: null,
     user: null,
     isAuthenticated: false,
+    isLoading: true,
 
     login: (token: string) => {
         const user = decodeToken(token);
@@ -46,12 +48,16 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     initialize: () => {
         const token = localStorage.getItem(TOKEN_KEY);
-        if (!token) return;
+        if (!token) {
+            set({ isLoading: false });
+            return;
+        }
         const user = decodeToken(token);
         if (!user) {
             localStorage.removeItem(TOKEN_KEY);
+            set({ isLoading: false });
             return;
         }
-        set({ token, user, isAuthenticated: true });
+        set({ token, user, isAuthenticated: true, isLoading: false });
     },
 }));

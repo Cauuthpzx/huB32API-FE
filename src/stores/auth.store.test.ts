@@ -15,6 +15,7 @@ describe("auth.store", () => {
             token: null,
             user: null,
             isAuthenticated: false,
+            isLoading: true,
         });
     });
 
