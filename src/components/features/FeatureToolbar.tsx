@@ -52,7 +52,7 @@ function ToolbarBtn({ icon, label, onClick, disabled, variant = "default" }: Too
                 disabled={disabled}
                 onClick={(e) => animateClick(e, onClick)}
                 className={cn(
-                    "flex size-9 shrink-0 items-center justify-center rounded-md border transition-colors active:scale-95",
+                    "flex size-10 shrink-0 items-center justify-center rounded-md border transition-colors active:scale-95",
                     styles[variant],
                     disabled && "opacity-40 cursor-not-allowed pointer-events-none",
                 )}
@@ -96,21 +96,21 @@ export function FeatureToolbar() {
 
                 {/* Center: icon buttons */}
                 <div className="flex flex-1 items-center justify-center gap-1.5 overflow-x-auto">
-                    <ToolbarBtn icon={<CheckSquare size={16} />} label={t("grid.selectAll")} onClick={selectAll} />
-                    <ToolbarBtn icon={<XSquare size={16} />} label={t("grid.deselectAll")} onClick={deselectAll} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<CheckSquare size={20} />} label={t("grid.selectAll")} onClick={selectAll} />
+                    <ToolbarBtn icon={<XSquare size={20} />} label={t("grid.deselectAll")} onClick={deselectAll} disabled={!hasSelection} />
 
                     <div className="mx-1 h-6 w-px shrink-0 bg-[var(--border-default)]" />
 
-                    <ToolbarBtn icon={<Lock size={16} />} label={t("feature.lock.title")} onClick={() => setOpenDialog("lock")} disabled={!hasSelection} variant="accent" />
-                    <ToolbarBtn icon={<Unlock size={16} />} label={t("feature.lock.unlock")} onClick={() => setOpenDialog("unlock")} disabled={!hasSelection} />
-                    <ToolbarBtn icon={<MessageSquare size={16} />} label={t("feature.message.title")} onClick={() => setOpenDialog("message")} disabled={!hasSelection} />
-                    <ToolbarBtn icon={<MousePointerBan size={16} />} label={t("feature.inputLock.title")} onClick={() => {}} disabled={!hasSelection} />
-                    <ToolbarBtn icon={<MonitorPlay size={16} />} label={t("feature.demo.title")} onClick={() => {}} disabled={!hasSelection} variant="success" />
+                    <ToolbarBtn icon={<Lock size={20} />} label={t("feature.lock.title")} onClick={() => setOpenDialog("lock")} disabled={!hasSelection} variant="accent" />
+                    <ToolbarBtn icon={<Unlock size={20} />} label={t("feature.lock.unlock")} onClick={() => setOpenDialog("unlock")} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<MessageSquare size={20} />} label={t("feature.message.title")} onClick={() => setOpenDialog("message")} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<MousePointerBan size={20} />} label={t("feature.inputLock.title")} onClick={() => {}} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<MonitorPlay size={20} />} label={t("feature.demo.title")} onClick={() => {}} disabled={!hasSelection} variant="success" />
 
                     <div className="mx-1 h-6 w-px shrink-0 bg-[var(--border-default)]" />
 
-                    <ToolbarBtn icon={<Power size={16} />} label={t("feature.power.shutdown")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
-                    <ToolbarBtn icon={<RotateCcw size={16} />} label={t("feature.power.reboot")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
+                    <ToolbarBtn icon={<Power size={20} />} label={t("feature.power.shutdown")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
+                    <ToolbarBtn icon={<RotateCcw size={20} />} label={t("feature.power.reboot")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
                 </div>
 
                 {/* Right: spacer for centering */}
