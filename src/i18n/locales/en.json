@@ -1,0 +1,207 @@
+{
+  "app": {
+    "name": "HUB32",
+    "title": "Computer Lab Management",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search...",
+    "confirm": "Confirm",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "back": "Back",
+    "noData": "No data",
+    "copiedToClipboard": "Copied to clipboard"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "loginButton": "Sign in",
+    "loggingIn": "Signing in...",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "error": {
+      "invalidCredentials": "Invalid username or password",
+      "tooManyAttempts": "Too many attempts, please wait {{seconds}} seconds",
+      "networkError": "Cannot connect to server",
+      "tokenExpired": "Session expired, please login again",
+      "unauthorized": "You don't have permission"
+    }
+  },
+  "sidebar": {
+    "rooms": "Rooms",
+    "allRooms": "All rooms",
+    "online": "{{count}} online",
+    "offline": "{{count}} offline",
+    "noRooms": "No rooms assigned",
+    "admin": "Administration"
+  },
+  "header": {
+    "role": {
+      "admin": "Administrator",
+      "teacher": "Teacher",
+      "readonly": "Read-only"
+    },
+    "language": "Language",
+    "settings": "Settings"
+  },
+  "grid": {
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "selected": "{{count}} selected",
+    "noComputers": "No computers in this room",
+    "computerCount_one": "{{count}} computer",
+    "computerCount_other": "{{count}} computers",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "refresh": "Refresh"
+  },
+  "computer": {
+    "state": {
+      "online": "Online",
+      "offline": "Offline",
+      "connected": "Connected",
+      "connecting": "Connecting",
+      "disconnecting": "Disconnecting",
+      "unknown": "Unknown",
+      "locked": "Locked"
+    },
+    "info": {
+      "hostname": "Hostname",
+      "ipAddress": "IP Address",
+      "user": "User",
+      "uptime": "Uptime",
+      "session": "Session",
+      "agentVersion": "Agent version",
+      "lastSeen": "Last seen",
+      "resolution": "Resolution"
+    }
+  },
+  "feature": {
+    "toolbar": "Controls",
+    "lock": {
+      "title": "Lock Screen",
+      "lock": "Lock",
+      "unlock": "Unlock",
+      "confirmLock": "Lock {{count}} computers?",
+      "confirmUnlock": "Unlock {{count}} computers?",
+      "success": "Locked {{count}} computers",
+      "unlockSuccess": "Unlocked {{count}} computers"
+    },
+    "message": {
+      "title": "Send Message",
+      "placeholder": "Type your message...",
+      "send": "Send",
+      "success": "Message sent to {{count}} computers"
+    },
+    "power": {
+      "title": "Power Control",
+      "shutdown": "Shut down",
+      "reboot": "Restart",
+      "logoff": "Log off",
+      "confirmShutdown": "Shut down {{count}} computers? Unsaved data will be lost.",
+      "confirmReboot": "Restart {{count}} computers?",
+      "confirmLogoff": "Log off users on {{count}} computers?",
+      "success": "{{action}} command sent to {{count}} computers"
+    },
+    "demo": {
+      "title": "Screen Broadcast",
+      "start": "Start broadcasting",
+      "stop": "Stop broadcasting",
+      "broadcasting": "Broadcasting to {{count}} computers",
+      "selectScreen": "Select screen to share"
+    },
+    "inputLock": {
+      "title": "Lock Mouse & Keyboard",
+      "lock": "Lock input",
+      "unlock": "Unlock input"
+    }
+  },
+  "admin": {
+    "title": "System Administration",
+    "tabs": {
+      "schools": "Schools",
+      "locations": "Rooms",
+      "teachers": "Teachers",
+      "audit": "Audit Log"
+    },
+    "school": {
+      "name": "School name",
+      "address": "Address",
+      "createTitle": "Add School",
+      "editTitle": "Edit School",
+      "deleteConfirm": "Delete \"{{name}}\"? All rooms and related data will be removed."
+    },
+    "location": {
+      "name": "Room name",
+      "building": "Building",
+      "floor": "Floor",
+      "capacity": "Capacity",
+      "type": "Type",
+      "types": {
+        "classroom": "Classroom",
+        "lab": "Laboratory",
+        "office": "Office"
+      },
+      "createTitle": "Add Room",
+      "editTitle": "Edit Room",
+      "deleteConfirm": "Delete room \"{{name}}\"?"
+    },
+    "teacher": {
+      "username": "Username",
+      "fullName": "Full name",
+      "role": "Role",
+      "password": "Password",
+      "assignedRooms": "Assigned rooms",
+      "assignRoom": "Assign room",
+      "removeRoom": "Remove room",
+      "createTitle": "Add Teacher",
+      "editTitle": "Edit Teacher",
+      "deleteConfirm": "Delete teacher \"{{name}}\"?"
+    },
+    "audit": {
+      "timestamp": "Time",
+      "teacher": "Teacher",
+      "action": "Action",
+      "target": "Target",
+      "details": "Details",
+      "ipAddress": "IP Address",
+      "filterByDate": "Filter by date",
+      "filterByAction": "Filter by action",
+      "filterByTeacher": "Filter by teacher"
+    }
+  },
+  "stream": {
+    "connecting": "Connecting stream...",
+    "connected": "Connected",
+    "disconnected": "Stream disconnected",
+    "reconnecting": "Reconnecting...",
+    "failed": "Connection failed",
+    "noStream": "No stream available"
+  },
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} min ago",
+    "hoursAgo": "{{count}} hr ago",
+    "daysAgo": "{{count}} days ago",
+    "seconds": "seconds",
+    "minutes": "minutes",
+    "hours": "hours",
+    "days": "days"
+  },
+  "validation": {
+    "required": "This field is required",
+    "minLength": "Minimum {{min}} characters",
+    "maxLength": "Maximum {{max}} characters",
+    "invalidEmail": "Invalid email",
+    "invalidUsername": "Username can only contain letters, numbers and underscores",
+    "passwordTooWeak": "Password must be at least 8 characters with uppercase, lowercase and numbers"
+  }
+}

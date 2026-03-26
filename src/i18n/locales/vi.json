@@ -1,0 +1,207 @@
+{
+  "app": {
+    "name": "HUB32",
+    "title": "Quản lý phòng máy",
+    "loading": "Đang tải...",
+    "error": "Đã xảy ra lỗi",
+    "retry": "Thử lại",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "create": "Tạo mới",
+    "search": "Tìm kiếm...",
+    "confirm": "Xác nhận",
+    "close": "Đóng",
+    "yes": "Có",
+    "no": "Không",
+    "back": "Quay lại",
+    "noData": "Không có dữ liệu",
+    "copiedToClipboard": "Đã sao chép"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "loginButton": "Đăng nhập",
+    "loggingIn": "Đang đăng nhập...",
+    "logoutConfirm": "Bạn có chắc muốn đăng xuất?",
+    "error": {
+      "invalidCredentials": "Sai tên đăng nhập hoặc mật khẩu",
+      "tooManyAttempts": "Quá nhiều lần thử, vui lòng đợi {{seconds}} giây",
+      "networkError": "Không thể kết nối server",
+      "tokenExpired": "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại",
+      "unauthorized": "Bạn không có quyền truy cập"
+    }
+  },
+  "sidebar": {
+    "rooms": "Phòng máy",
+    "allRooms": "Tất cả phòng",
+    "online": "{{count}} trực tuyến",
+    "offline": "{{count}} ngoại tuyến",
+    "noRooms": "Chưa được gán phòng máy nào",
+    "admin": "Quản trị"
+  },
+  "header": {
+    "role": {
+      "admin": "Quản trị viên",
+      "teacher": "Giáo viên",
+      "readonly": "Chỉ xem"
+    },
+    "language": "Ngôn ngữ",
+    "settings": "Cài đặt"
+  },
+  "grid": {
+    "selectAll": "Chọn tất cả",
+    "deselectAll": "Bỏ chọn tất cả",
+    "selected": "Đã chọn {{count}} máy",
+    "noComputers": "Phòng này chưa có máy tính nào",
+    "computerCount_one": "{{count}} máy tính",
+    "computerCount_other": "{{count}} máy tính",
+    "zoomIn": "Phóng to",
+    "zoomOut": "Thu nhỏ",
+    "refresh": "Làm mới"
+  },
+  "computer": {
+    "state": {
+      "online": "Trực tuyến",
+      "offline": "Ngoại tuyến",
+      "connected": "Đã kết nối",
+      "connecting": "Đang kết nối",
+      "disconnecting": "Đang ngắt",
+      "unknown": "Không rõ",
+      "locked": "Đã khóa"
+    },
+    "info": {
+      "hostname": "Tên máy",
+      "ipAddress": "Địa chỉ IP",
+      "user": "Người dùng",
+      "uptime": "Thời gian hoạt động",
+      "session": "Phiên làm việc",
+      "agentVersion": "Phiên bản Agent",
+      "lastSeen": "Lần cuối trực tuyến",
+      "resolution": "Độ phân giải"
+    }
+  },
+  "feature": {
+    "toolbar": "Công cụ điều khiển",
+    "lock": {
+      "title": "Khóa màn hình",
+      "lock": "Khóa",
+      "unlock": "Mở khóa",
+      "confirmLock": "Khóa màn hình {{count}} máy tính?",
+      "confirmUnlock": "Mở khóa {{count}} máy tính?",
+      "success": "Đã khóa {{count}} máy",
+      "unlockSuccess": "Đã mở khóa {{count}} máy"
+    },
+    "message": {
+      "title": "Gửi tin nhắn",
+      "placeholder": "Nhập nội dung tin nhắn...",
+      "send": "Gửi",
+      "success": "Đã gửi tin nhắn tới {{count}} máy"
+    },
+    "power": {
+      "title": "Điều khiển nguồn",
+      "shutdown": "Tắt máy",
+      "reboot": "Khởi động lại",
+      "logoff": "Đăng xuất",
+      "confirmShutdown": "Tắt {{count}} máy tính? Dữ liệu chưa lưu sẽ bị mất.",
+      "confirmReboot": "Khởi động lại {{count}} máy tính?",
+      "confirmLogoff": "Đăng xuất người dùng trên {{count}} máy tính?",
+      "success": "Đã gửi lệnh {{action}} tới {{count}} máy"
+    },
+    "demo": {
+      "title": "Trình chiếu",
+      "start": "Bắt đầu trình chiếu",
+      "stop": "Dừng trình chiếu",
+      "broadcasting": "Đang trình chiếu tới {{count}} máy",
+      "selectScreen": "Chọn màn hình để chia sẻ"
+    },
+    "inputLock": {
+      "title": "Khóa chuột & bàn phím",
+      "lock": "Khóa input",
+      "unlock": "Mở input"
+    }
+  },
+  "admin": {
+    "title": "Quản trị hệ thống",
+    "tabs": {
+      "schools": "Trường học",
+      "locations": "Phòng máy",
+      "teachers": "Giáo viên",
+      "audit": "Nhật ký"
+    },
+    "school": {
+      "name": "Tên trường",
+      "address": "Địa chỉ",
+      "createTitle": "Thêm trường mới",
+      "editTitle": "Sửa thông tin trường",
+      "deleteConfirm": "Xóa trường \"{{name}}\"? Tất cả phòng máy và dữ liệu liên quan sẽ bị xóa."
+    },
+    "location": {
+      "name": "Tên phòng",
+      "building": "Tòa nhà",
+      "floor": "Tầng",
+      "capacity": "Sức chứa",
+      "type": "Loại",
+      "types": {
+        "classroom": "Phòng học",
+        "lab": "Phòng thí nghiệm",
+        "office": "Văn phòng"
+      },
+      "createTitle": "Thêm phòng mới",
+      "editTitle": "Sửa thông tin phòng",
+      "deleteConfirm": "Xóa phòng \"{{name}}\"?"
+    },
+    "teacher": {
+      "username": "Tên đăng nhập",
+      "fullName": "Họ và tên",
+      "role": "Vai trò",
+      "password": "Mật khẩu",
+      "assignedRooms": "Phòng được gán",
+      "assignRoom": "Gán phòng",
+      "removeRoom": "Bỏ gán phòng",
+      "createTitle": "Thêm giáo viên",
+      "editTitle": "Sửa thông tin giáo viên",
+      "deleteConfirm": "Xóa giáo viên \"{{name}}\"?"
+    },
+    "audit": {
+      "timestamp": "Thời gian",
+      "teacher": "Giáo viên",
+      "action": "Hành động",
+      "target": "Đối tượng",
+      "details": "Chi tiết",
+      "ipAddress": "Địa chỉ IP",
+      "filterByDate": "Lọc theo ngày",
+      "filterByAction": "Lọc theo hành động",
+      "filterByTeacher": "Lọc theo giáo viên"
+    }
+  },
+  "stream": {
+    "connecting": "Đang kết nối stream...",
+    "connected": "Đã kết nối",
+    "disconnected": "Mất kết nối stream",
+    "reconnecting": "Đang kết nối lại...",
+    "failed": "Không thể kết nối",
+    "noStream": "Chưa có stream"
+  },
+  "time": {
+    "justNow": "Vừa xong",
+    "minutesAgo": "{{count}} phút trước",
+    "hoursAgo": "{{count}} giờ trước",
+    "daysAgo": "{{count}} ngày trước",
+    "seconds": "giây",
+    "minutes": "phút",
+    "hours": "giờ",
+    "days": "ngày"
+  },
+  "validation": {
+    "required": "Trường này là bắt buộc",
+    "minLength": "Tối thiểu {{min}} ký tự",
+    "maxLength": "Tối đa {{max}} ký tự",
+    "invalidEmail": "Email không hợp lệ",
+    "invalidUsername": "Tên đăng nhập chỉ chứa chữ, số và dấu gạch dưới",
+    "passwordTooWeak": "Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường và số"
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "app": {
+    "name": "HUB32",
+    "title": "计算机教室管理",
+    "loading": "加载中...",
+    "error": "发生错误",
+    "retry": "重试",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "新建",
+    "search": "搜索...",
+    "confirm": "确认",
+    "close": "关闭",
+    "yes": "是",
+    "no": "否",
+    "back": "返回",
+    "noData": "暂无数据",
+    "copiedToClipboard": "已复制"
+  },
+  "auth": {
+    "login": "登录",
+    "logout": "退出登录",
+    "username": "用户名",
+    "password": "密码",
+    "loginButton": "登录",
+    "loggingIn": "登录中...",
+    "logoutConfirm": "确定退出登录？",
+    "error": {
+      "invalidCredentials": "用户名或密码错误",
+      "tooManyAttempts": "尝试次数过多，请等待{{seconds}}秒",
+      "networkError": "无法连接服务器",
+      "tokenExpired": "登录已过期，请重新登录",
+      "unauthorized": "您没有访问权限"
+    }
+  },
+  "sidebar": {
+    "rooms": "教室",
+    "allRooms": "所有教室",
+    "online": "{{count}}台在线",
+    "offline": "{{count}}台离线",
+    "noRooms": "未分配教室",
+    "admin": "管理"
+  },
+  "header": {
+    "role": {
+      "admin": "管理员",
+      "teacher": "教师",
+      "readonly": "只读"
+    },
+    "language": "语言",
+    "settings": "设置"
+  },
+  "grid": {
+    "selectAll": "全选",
+    "deselectAll": "取消全选",
+    "selected": "已选{{count}}台",
+    "noComputers": "该教室暂无电脑",
+    "computerCount_one": "{{count}}台电脑",
+    "computerCount_other": "{{count}}台电脑",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "refresh": "刷新"
+  },
+  "computer": {
+    "state": {
+      "online": "在线",
+      "offline": "离线",
+      "connected": "已连接",
+      "connecting": "连接中",
+      "disconnecting": "断开中",
+      "unknown": "未知",
+      "locked": "已锁定"
+    },
+    "info": {
+      "hostname": "主机名",
+      "ipAddress": "IP地址",
+      "user": "用户",
+      "uptime": "运行时间",
+      "session": "会话",
+      "agentVersion": "Agent版本",
+      "lastSeen": "最后在线",
+      "resolution": "分辨率"
+    }
+  },
+  "feature": {
+    "toolbar": "控制面板",
+    "lock": {
+      "title": "锁屏",
+      "lock": "锁定",
+      "unlock": "解锁",
+      "confirmLock": "锁定{{count}}台电脑？",
+      "confirmUnlock": "解锁{{count}}台电脑？",
+      "success": "已锁定{{count}}台",
+      "unlockSuccess": "已解锁{{count}}台"
+    },
+    "message": {
+      "title": "发送消息",
+      "placeholder": "输入消息内容...",
+      "send": "发送",
+      "success": "已发送至{{count}}台电脑"
+    },
+    "power": {
+      "title": "电源控制",
+      "shutdown": "关机",
+      "reboot": "重启",
+      "logoff": "注销",
+      "confirmShutdown": "关闭{{count}}台电脑？未保存数据将丢失。",
+      "confirmReboot": "重启{{count}}台电脑？",
+      "confirmLogoff": "注销{{count}}台电脑上的用户？",
+      "success": "已向{{count}}台电脑发送{{action}}指令"
+    },
+    "demo": {
+      "title": "屏幕广播",
+      "start": "开始广播",
+      "stop": "停止广播",
+      "broadcasting": "正在向{{count}}台电脑广播",
+      "selectScreen": "选择要共享的屏幕"
+    },
+    "inputLock": {
+      "title": "锁定鼠标键盘",
+      "lock": "锁定输入",
+      "unlock": "解锁输入"
+    }
+  },
+  "admin": {
+    "title": "系统管理",
+    "tabs": {
+      "schools": "学校",
+      "locations": "教室",
+      "teachers": "教师",
+      "audit": "日志"
+    },
+    "school": {
+      "name": "学校名称",
+      "address": "地址",
+      "createTitle": "添加学校",
+      "editTitle": "编辑学校",
+      "deleteConfirm": "删除\"{{name}}\"？所有教室和相关数据将被删除。"
+    },
+    "location": {
+      "name": "教室名称",
+      "building": "楼栋",
+      "floor": "楼层",
+      "capacity": "容量",
+      "type": "类型",
+      "types": {
+        "classroom": "教室",
+        "lab": "实验室",
+        "office": "办公室"
+      },
+      "createTitle": "添加教室",
+      "editTitle": "编辑教室",
+      "deleteConfirm": "删除教室\"{{name}}\"？"
+    },
+    "teacher": {
+      "username": "用户名",
+      "fullName": "姓名",
+      "role": "角色",
+      "password": "密码",
+      "assignedRooms": "分配教室",
+      "assignRoom": "分配",
+      "removeRoom": "移除",
+      "createTitle": "添加教师",
+      "editTitle": "编辑教师",
+      "deleteConfirm": "删除教师\"{{name}}\"？"
+    },
+    "audit": {
+      "timestamp": "时间",
+      "teacher": "教师",
+      "action": "操作",
+      "target": "目标",
+      "details": "详情",
+      "ipAddress": "IP地址",
+      "filterByDate": "按日期筛选",
+      "filterByAction": "按操作筛选",
+      "filterByTeacher": "按教师筛选"
+    }
+  },
+  "stream": {
+    "connecting": "正在连接...",
+    "connected": "已连接",
+    "disconnected": "连接断开",
+    "reconnecting": "正在重连...",
+    "failed": "连接失败",
+    "noStream": "暂无画面"
+  },
+  "time": {
+    "justNow": "刚刚",
+    "minutesAgo": "{{count}}分钟前",
+    "hoursAgo": "{{count}}小时前",
+    "daysAgo": "{{count}}天前",
+    "seconds": "秒",
+    "minutes": "分钟",
+    "hours": "小时",
+    "days": "天"
+  },
+  "validation": {
+    "required": "此项必填",
+    "minLength": "最少{{min}}个字符",
+    "maxLength": "最多{{max}}个字符",
+    "invalidEmail": "邮箱格式无效",
+    "invalidUsername": "用户名只能包含字母、数字和下划线",
+    "passwordTooWeak": "密码至少8位，包含大小写字母和数字"
+  }
+}
