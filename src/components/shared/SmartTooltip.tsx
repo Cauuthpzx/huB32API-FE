@@ -3,10 +3,7 @@ import {
     useRef,
     useCallback,
     useEffect,
-    cloneElement,
-    isValidElement,
     type ReactNode,
-    type ReactElement,
 } from "react";
 import { createPortal } from "react-dom";
 
@@ -14,7 +11,7 @@ type Position = "auto" | "top" | "bottom" | "left" | "right";
 
 interface SmartTooltipProps {
     content: ReactNode;
-    children: ReactElement;
+    children: ReactNode;
     delay?: number;
     position?: Position;
     interactive?: boolean;
@@ -94,56 +91,20 @@ function Arrow({ placement }: { placement: "top" | "bottom" | "left" | "right" }
     const base: React.CSSProperties = { position: "absolute", width: 0, height: 0 };
 
     const outer: Record<string, React.CSSProperties> = {
-        top: {
-            ...base, bottom: -s, left: "50%", transform: "translateX(-50%)",
-            borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`,
-            borderTop: `${s}px solid var(--border-strong)`,
-        },
-        bottom: {
-            ...base, top: -s, left: "50%", transform: "translateX(-50%)",
-            borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`,
-            borderBottom: `${s}px solid var(--border-strong)`,
-        },
-        left: {
-            ...base, right: -s, top: "50%", transform: "translateY(-50%)",
-            borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`,
-            borderLeft: `${s}px solid var(--border-strong)`,
-        },
-        right: {
-            ...base, left: -s, top: "50%", transform: "translateY(-50%)",
-            borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`,
-            borderRight: `${s}px solid var(--border-strong)`,
-        },
+        top: { ...base, bottom: -s, left: "50%", transform: "translateX(-50%)", borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderTop: `${s}px solid var(--border-strong)` },
+        bottom: { ...base, top: -s, left: "50%", transform: "translateX(-50%)", borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderBottom: `${s}px solid var(--border-strong)` },
+        left: { ...base, right: -s, top: "50%", transform: "translateY(-50%)", borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderLeft: `${s}px solid var(--border-strong)` },
+        right: { ...base, left: -s, top: "50%", transform: "translateY(-50%)", borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderRight: `${s}px solid var(--border-strong)` },
     };
 
     const inner: Record<string, React.CSSProperties> = {
-        top: {
-            position: "absolute", bottom: 1, left: -s, width: 0, height: 0,
-            borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`,
-            borderTop: `${s}px solid var(--bg-elevated)`,
-        },
-        bottom: {
-            position: "absolute", top: 1, left: -s, width: 0, height: 0,
-            borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`,
-            borderBottom: `${s}px solid var(--bg-elevated)`,
-        },
-        left: {
-            position: "absolute", right: 1, top: -s, width: 0, height: 0,
-            borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`,
-            borderLeft: `${s}px solid var(--bg-elevated)`,
-        },
-        right: {
-            position: "absolute", left: 1, top: -s, width: 0, height: 0,
-            borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`,
-            borderRight: `${s}px solid var(--bg-elevated)`,
-        },
+        top: { position: "absolute", bottom: 1, left: -s, width: 0, height: 0, borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderTop: `${s}px solid var(--bg-elevated)` },
+        bottom: { position: "absolute", top: 1, left: -s, width: 0, height: 0, borderLeft: `${s}px solid transparent`, borderRight: `${s}px solid transparent`, borderBottom: `${s}px solid var(--bg-elevated)` },
+        left: { position: "absolute", right: 1, top: -s, width: 0, height: 0, borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderLeft: `${s}px solid var(--bg-elevated)` },
+        right: { position: "absolute", left: 1, top: -s, width: 0, height: 0, borderTop: `${s}px solid transparent`, borderBottom: `${s}px solid transparent`, borderRight: `${s}px solid var(--bg-elevated)` },
     };
 
-    return (
-        <div style={outer[placement]}>
-            <div style={inner[placement]} />
-        </div>
-    );
+    return <div style={outer[placement]}><div style={inner[placement]} /></div>;
 }
 
 const TRANSLATE_MAP = {
@@ -163,7 +124,7 @@ export function SmartTooltip({
     const [visible, setVisible] = useState(false);
     const [pos, setPos] = useState<TooltipPos | null>(null);
     const [animating, setAnimating] = useState(false);
-    const triggerRef = useRef<HTMLElement | null>(null);
+    const triggerRef = useRef<HTMLSpanElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
     const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -180,7 +141,6 @@ export function SmartTooltip({
         setTimeout(() => setVisible(false), 100);
     }, []);
 
-    // Delayed hide for interactive mode — gives time to move mouse to tooltip
     const hideDelayed = useCallback(() => {
         clearTimeout(timerRef.current);
         timerRef.current = setTimeout(hide, 150);
@@ -197,34 +157,16 @@ export function SmartTooltip({
         }
     }, [visible, position]);
 
-    // Clone child element and attach ref + mouse handlers directly
-    const trigger = isValidElement(children)
-        ? cloneElement(children as ReactElement<Record<string, unknown>>, {
-              ref: (node: HTMLElement | null) => {
-                  triggerRef.current = node;
-                  // Forward ref if child had one
-                  const childRef = (children as { ref?: unknown }).ref;
-                  if (typeof childRef === "function") childRef(node);
-                  else if (childRef && typeof childRef === "object") {
-                      (childRef as React.MutableRefObject<HTMLElement | null>).current = node;
-                  }
-              },
-              onMouseEnter: (e: React.MouseEvent) => {
-                  show();
-                  const orig = (children.props as Record<string, unknown>).onMouseEnter;
-                  if (typeof orig === "function") (orig as (e: React.MouseEvent) => void)(e);
-              },
-              onMouseLeave: (e: React.MouseEvent) => {
-                  if (interactive) hideDelayed(); else hide();
-                  const orig = (children.props as Record<string, unknown>).onMouseLeave;
-                  if (typeof orig === "function") (orig as (e: React.MouseEvent) => void)(e);
-              },
-          })
-        : children;
-
     return (
         <>
-            {trigger}
+            <span
+                ref={triggerRef}
+                onMouseEnter={show}
+                onMouseLeave={interactive ? hideDelayed : hide}
+                style={{ display: "inline-flex" }}
+            >
+                {children}
+            </span>
             {visible &&
                 createPortal(
                     <div
