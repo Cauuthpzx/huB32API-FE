@@ -26,8 +26,8 @@ export const useRoomStore = create<RoomState>((set, get) => ({
     selectedLocationId: null,
     computers: [],
     selectedComputerIds: new Set<string>(),
-    isLoadingLocations: false,
-    isLoadingComputers: false,
+    isLoadingLocations: true,
+    isLoadingComputers: true,
     sidebarPinned: localStorage.getItem(SIDEBAR_PIN_KEY) === "true",
 
     fetchLocations: async (schoolId: string) => {

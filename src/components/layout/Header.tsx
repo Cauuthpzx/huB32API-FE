@@ -4,6 +4,7 @@ import { Monitor, Search } from "lucide-react";
 
 export function Header() {
     const { t } = useTranslation();
+    const isLoadingLocations = useRoomStore((s) => s.isLoadingLocations);
     const locations = useRoomStore((s) => s.locations);
     const selectedLocationId = useRoomStore((s) => s.selectedLocationId);
     const computers = useRoomStore((s) => s.computers);
@@ -16,27 +17,33 @@ export function Header() {
         <header className="flex h-12 shrink-0 items-center gap-4 border-b border-[#1C1C1F] bg-[#111113] px-4">
             {/* Left: room stats (no shrink) */}
             <div className="flex shrink-0 items-center">
-                <h2 className="text-sm font-semibold text-[var(--text-primary)]">
-                    {selectedLocation?.name ?? t("sidebar.allRooms")}
-                </h2>
-
-                {selectedLocation && (
+                {isLoadingLocations ? (
+                    <div className="h-4 w-48 animate-pulse rounded bg-zinc-800/60" />
+                ) : (
                     <>
-                        <span className="mx-2 text-[#3F3F46]">|</span>
-                        <Monitor size={14} className="text-zinc-500" />
-                        <span className="ml-1.5 text-[13px] text-zinc-400">
-                            {total}
-                        </span>
-                        <span className="mx-2 text-[#3F3F46]">|</span>
-                        <span className="text-[13px] text-[#22C55E]">
-                            <span className="font-medium">{online}</span>
-                            {" online"}
-                        </span>
+                        <h2 className="text-sm font-semibold text-[var(--text-primary)]">
+                            {selectedLocation?.name ?? t("sidebar.allRooms")}
+                        </h2>
+
+                        {selectedLocation && (
+                            <>
+                                <span className="mx-2 text-[#3F3F46]">|</span>
+                                <Monitor size={14} className="text-zinc-500" />
+                                <span className="ml-1.5 text-[13px] text-zinc-400">
+                                    {total}
+                                </span>
+                                <span className="mx-2 text-[#3F3F46]">|</span>
+                                <span className="text-[13px] text-[#22C55E]">
+                                    <span className="font-medium">{online}</span>
+                                    {" online"}
+                                </span>
+                            </>
+                        )}
                     </>
                 )}
             </div>
 
-            {/* Center: search (flex:1, auto-centered) */}
+            {/* Center: search (flex:1, auto-centered, centered in full header width) */}
             <div className="flex flex-1 justify-center">
                 <div className="relative w-full max-w-[400px]">
                     <Search

@@ -25,6 +25,7 @@ export function AppSidebar() {
     const navigate = useNavigate();
     const user = useAuthStore((s) => s.user);
     const logout = useAuthStore((s) => s.logout);
+    const isLoadingLocations = useRoomStore((s) => s.isLoadingLocations);
     const locations = useRoomStore((s) => s.locations);
     const selectedLocationId = useRoomStore((s) => s.selectedLocationId);
     const selectLocation = useRoomStore((s) => s.selectLocation);
@@ -130,7 +131,13 @@ export function AppSidebar() {
                         <p className="px-2 py-1 text-xs font-medium uppercase text-[var(--text-tertiary)]">
                             {t("sidebar.rooms")}
                         </p>
-                        {locations.length === 0 ? (
+                        {isLoadingLocations ? (
+                            <div className="space-y-2 px-2 py-2">
+                                <div className="h-8 animate-pulse rounded-md bg-zinc-800/60" />
+                                <div className="h-8 animate-pulse rounded-md bg-zinc-800/40" />
+                                <div className="h-8 animate-pulse rounded-md bg-zinc-800/30" />
+                            </div>
+                        ) : locations.length === 0 ? (
                             <p className="px-2 py-4 text-sm text-[var(--text-disabled)]">
                                 {t("sidebar.noRooms")}
                             </p>
