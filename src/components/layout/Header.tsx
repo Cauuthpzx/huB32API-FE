@@ -14,8 +14,8 @@ export function Header() {
     const online = computers.filter((c) => c.state !== "offline").length;
 
     return (
-        <header className="flex h-12 shrink-0 items-center gap-4 border-b border-[#1C1C1F] bg-[#111113] px-4">
-            {/* Left: room stats (no shrink) */}
+        <header className="relative flex h-12 shrink-0 items-center border-b border-[#1C1C1F] bg-[#111113] px-4">
+            {/* Left: room stats */}
             <div className="flex shrink-0 items-center">
                 {isLoadingLocations ? (
                     <div className="h-4 w-48 animate-pulse rounded bg-zinc-800/60" />
@@ -43,9 +43,9 @@ export function Header() {
                 )}
             </div>
 
-            {/* Center: search (flex:1, auto-centered, centered in full header width) */}
-            <div className="flex flex-1 justify-center">
-                <div className="relative w-full max-w-[400px]">
+            {/* Center: search — absolute center of entire header */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] px-4">
+                <div className="relative">
                     <Search
                         size={14}
                         className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500"
@@ -57,9 +57,6 @@ export function Header() {
                     />
                 </div>
             </div>
-
-            {/* Right: spacer for symmetry */}
-            <div className="shrink-0" />
         </header>
     );
 }
