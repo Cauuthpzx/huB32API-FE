@@ -41,9 +41,7 @@
     "online": "{{count}} trực tuyến",
     "offline": "{{count}} ngoại tuyến",
     "noRooms": "Chưa được gán phòng máy nào",
-    "admin": "Quản trị",
-    "pin": "Ghim sidebar",
-    "unpin": "Bỏ ghim"
+    "admin": "Quản trị"
   },
   "header": {
     "role": {
