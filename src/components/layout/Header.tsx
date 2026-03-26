@@ -15,21 +15,21 @@ export function Header() {
     const offline = total - online;
 
     return (
-        <header className="flex h-12 shrink-0 items-center justify-between border-b border-[var(--border-default)] bg-[var(--bg-secondary)] px-4">
+        <header className="flex h-12 shrink-0 items-center justify-between border-b-2 border-[var(--border-default)] bg-[#111113] px-4">
             {/* Left: room name + stats */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
                 <h2 className="text-sm font-semibold text-[var(--text-primary)]">
                     {selectedLocation?.name ?? t("sidebar.allRooms")}
                 </h2>
                 {selectedLocation && (
-                    <div className="flex items-center gap-2 text-xs text-[var(--text-tertiary)]">
-                        <span>
+                    <div className="flex items-center gap-3 text-xs">
+                        <span className="text-[var(--text-secondary)]">
                             {t("grid.computerCount_other", { count: total })}
                         </span>
-                        <span className="text-[var(--success)]">
+                        <span className="font-medium text-[var(--success)]">
                             {t("sidebar.online", { count: online })}
                         </span>
-                        <span>
+                        <span className="text-[var(--text-tertiary)]">
                             {t("sidebar.offline", { count: offline })}
                         </span>
                     </div>

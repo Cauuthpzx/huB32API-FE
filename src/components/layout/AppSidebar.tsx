@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
     ChevronRight,
-    ChevronLeft,
     LogOut,
     Monitor,
     User,
@@ -29,7 +28,6 @@ export function AppSidebar() {
     const handleSelectRoom = useCallback(
         async (id: string) => {
             await selectLocation(id);
-            // Auto-close on mobile
             if (window.innerWidth < 768) {
                 setIsOpen(false);
             }
@@ -45,25 +43,33 @@ export function AppSidebar() {
 
     return (
         <>
-            {/* Hover trigger zone — always visible on left edge */}
-            <div
-                className="fixed left-0 top-0 z-[var(--z-overlay)] h-full w-3"
-                onMouseEnter={() => setIsOpen(true)}
-            />
+            {/* Bug 1 fix: Wide invisible hover zone (40px) along left edge */}
+            {!isOpen && (
+                <div
+                    className="fixed left-0 top-0 z-[var(--z-overlay)] h-full w-10"
+                    onMouseEnter={() => setIsOpen(true)}
+                />
+            )}
 
-            {/* Arrow toggle button */}
+            {/* Bug 2 fix: Tall vertical trigger bar (80px × 20px), centered left edge */}
             <button
                 onClick={() => setIsOpen((o) => !o)}
                 className={cn(
                     "fixed top-1/2 z-[var(--z-overlay)] -translate-y-1/2",
-                    "flex h-8 w-5 items-center justify-center",
-                    "rounded-r-md bg-[var(--bg-elevated)] border border-l-0 border-[var(--border-default)]",
-                    "text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
+                    "flex h-20 w-5 items-center justify-center",
+                    "rounded-r-md border border-l-0",
+                    "bg-[#141416] border-[#2A2A2E]",
+                    "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
                     "transition-all duration-200",
                     isOpen ? "left-[220px]" : "left-0",
                 )}
             >
-                {isOpen ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />}
+                <ChevronRight
+                    className={cn(
+                        "size-4 transition-transform duration-200",
+                        isOpen && "rotate-180",
+                    )}
+                />
             </button>
 
             {/* Backdrop — click to close */}
