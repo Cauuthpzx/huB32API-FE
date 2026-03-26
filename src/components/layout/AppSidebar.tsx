@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRoomStore } from "@/stores/room.store";
+import type { LocationResponse } from "@/api/types";
 import { useThemeStore } from "@/stores/theme.store";
 import { THEMES, THEME_NAMES, type ThemeName } from "@/lib/themes";
 import { Badge } from "@/components/ui/badge";
@@ -56,10 +57,13 @@ export function AppSidebar() {
         [selectLocation, sidebarPinned, location.pathname, navigate],
     );
 
-    const onlineCount = (locationId: string) => {
-        if (locationId !== selectedLocationId || !Array.isArray(computers)) return null;
-        const online = computers.filter((c) => c.state !== "offline").length;
-        return `${online}/${computers.length}`;
+    const roomBadge = (loc: LocationResponse) => {
+        if (loc.id === selectedLocationId && Array.isArray(computers) && computers.length > 0) {
+            const online = computers.filter((c) => c.state !== "offline").length;
+            return `${online}/${computers.length}`;
+        }
+        // Show capacity for non-selected rooms
+        return String(loc.capacity);
     };
 
     return (
@@ -172,11 +176,9 @@ export function AppSidebar() {
                                 >
                                     <Monitor className="size-4 shrink-0" />
                                     <span className="min-w-0 flex-1 truncate">{loc.name}</span>
-                                    {onlineCount(loc.id) && (
-                                        <Badge variant="secondary" className="text-xs">
-                                            {onlineCount(loc.id)}
-                                        </Badge>
-                                    )}
+                                    <Badge variant="secondary" className="text-xs">
+                                        {roomBadge(loc)}
+                                    </Badge>
                                 </button>
                             ))
                         )}
