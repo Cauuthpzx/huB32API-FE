@@ -1,0 +1,151 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+    Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+} from "@/components/ui/dialog";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+    AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { DataTable, type Column } from "./DataTable";
+import { schoolsApi } from "@/api/schools.api";
+import type { SchoolResponse } from "@/api/types";
+
+export function SchoolManager() {
+    const { t } = useTranslation();
+    const qc = useQueryClient();
+
+    const { data: schools = [], isLoading } = useQuery({
+        queryKey: ["schools"],
+        queryFn: schoolsApi.getAll,
+    });
+
+    const [editItem, setEditItem] = useState<SchoolResponse | null>(null);
+    const [deleteItem, setDeleteItem] = useState<SchoolResponse | null>(null);
+    const [formOpen, setFormOpen] = useState(false);
+    const [name, setName] = useState("");
+    const [address, setAddress] = useState("");
+
+    const createMut = useMutation({
+        mutationFn: () => schoolsApi.create({ name, address }),
+        onSuccess: () => { qc.invalidateQueries({ queryKey: ["schools"] }); toast.success(t("app.save")); closeForm(); },
+        onError: () => toast.error(t("app.error")),
+    });
+
+    const updateMut = useMutation({
+        mutationFn: () => schoolsApi.update(editItem!.id, { name, address }),
+        onSuccess: () => { qc.invalidateQueries({ queryKey: ["schools"] }); toast.success(t("app.save")); closeForm(); },
+        onError: () => toast.error(t("app.error")),
+    });
+
+    const deleteMut = useMutation({
+        mutationFn: (id: string) => schoolsApi.remove(id),
+        onSuccess: () => { qc.invalidateQueries({ queryKey: ["schools"] }); toast.success(t("app.delete")); setDeleteItem(null); },
+        onError: () => toast.error(t("app.error")),
+    });
+
+    function openCreate() {
+        setEditItem(null);
+        setName("");
+        setAddress("");
+        setFormOpen(true);
+    }
+
+    function openEdit(s: SchoolResponse) {
+        setEditItem(s);
+        setName(s.name);
+        setAddress(s.address);
+        setFormOpen(true);
+    }
+
+    function closeForm() {
+        setFormOpen(false);
+        setEditItem(null);
+    }
+
+    function handleSubmit() {
+        if (editItem) updateMut.mutate();
+        else createMut.mutate();
+    }
+
+    const columns: Column<SchoolResponse>[] = [
+        { key: "name", header: t("admin.school.name"), sortable: true },
+        { key: "address", header: t("admin.school.address"), sortable: true },
+        {
+            key: "createdAt",
+            header: t("admin.audit.timestamp"),
+            sortable: true,
+            render: (r) => new Date(r.createdAt * 1000).toLocaleDateString(),
+        },
+        {
+            key: "_actions",
+            header: "",
+            render: (r) => (
+                <div className="flex gap-1">
+                    <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={(e) => { e.stopPropagation(); openEdit(r); }}>
+                        <Pencil size={14} />
+                    </Button>
+                    <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-red-400 hover:text-red-300" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
+                        <Trash2 size={14} />
+                    </Button>
+                </div>
+            ),
+        },
+    ];
+
+    return (
+        <div className="space-y-4">
+            <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium text-[var(--text-primary)]">{t("admin.tabs.schools")}</h3>
+                <Button type="button" size="sm" className="h-8 gap-1.5 text-xs" onClick={openCreate}>
+                    <Plus size={14} /> {t("app.create")}
+                </Button>
+            </div>
+
+            <DataTable columns={columns} data={schools} isLoading={isLoading} rowKey={(r) => r.id} onRowClick={openEdit} />
+
+            {/* Form Dialog */}
+            <Dialog open={formOpen} onOpenChange={(v) => !v && closeForm()}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{editItem ? t("admin.school.editTitle") : t("admin.school.createTitle")}</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-3">
+                        <div>
+                            <Label>{t("admin.school.name")}</Label>
+                            <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+                        </div>
+                        <div>
+                            <Label>{t("admin.school.address")}</Label>
+                            <Input value={address} onChange={(e) => setAddress(e.target.value)} />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button type="button" variant="ghost" onClick={closeForm}>{t("app.cancel")}</Button>
+                        <Button type="button" onClick={handleSubmit} disabled={!name.trim()}>{t("app.save")}</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Delete Confirm */}
+            <AlertDialog open={!!deleteItem} onOpenChange={(v) => !v && setDeleteItem(null)}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{t("app.confirm")}</AlertDialogTitle>
+                        <AlertDialogDescription>{t("admin.school.deleteConfirm", { name: deleteItem?.name })}</AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>{t("app.cancel")}</AlertDialogCancel>
+                        <AlertDialogAction className="bg-destructive" onClick={() => deleteItem && deleteMut.mutate(deleteItem.id)}>{t("app.delete")}</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </div>
+    );
+}
