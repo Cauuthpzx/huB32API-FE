@@ -16,28 +16,30 @@ const CONFIG: Record<string, { color: string; zigzag: boolean; duration: string 
     unknown:       { color: "#3F3F46", zigzag: false, duration: "0s"   },
 };
 
-export function HeartbeatLine({ state, width = 32, height = 14 }: HeartbeatLineProps) {
+export function HeartbeatLine({ state, width = 32, height = 12 }: HeartbeatLineProps) {
     const { color, zigzag, duration } = CONFIG[state] ?? CONFIG.unknown;
     const mid = height / 2;
-    const top = 1;
-    const bot = height - 1;
 
-    // Sharp zigzag: flat — V — V — flat (peaks near edges for more amplitude)
+    // Decaying zigzag: flat → big V → smaller V → tiny V → flat
     const zigzagPoints = zigzag
         ? [
               `0,${mid}`,
-              `${width * 0.12},${mid}`,
-              `${width * 0.22},${top}`,
-              `${width * 0.32},${bot}`,
-              `${width * 0.42},${top}`,
-              `${width * 0.52},${bot}`,
-              `${width * 0.62},${top}`,
-              `${width * 0.72},${mid}`,
+              `${width * 0.15},${mid}`,
+              // Peak 1: biggest (±40% of mid)
+              `${width * 0.23},${mid - mid * 0.7}`,
+              `${width * 0.31},${mid + mid * 0.7}`,
+              // Peak 2: medium (±25% of mid)
+              `${width * 0.39},${mid - mid * 0.4}`,
+              `${width * 0.47},${mid + mid * 0.4}`,
+              // Peak 3: small (±12% of mid)
+              `${width * 0.54},${mid - mid * 0.15}`,
+              `${width * 0.60},${mid + mid * 0.15}`,
+              `${width * 0.68},${mid}`,
               `${width},${mid}`,
           ].join(" ")
         : `0,${mid} ${width},${mid}`;
 
-    const pathLength = zigzag ? width * 2.8 : width;
+    const pathLength = zigzag ? width * 2.5 : width;
 
     return (
         <svg
