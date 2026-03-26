@@ -11,6 +11,7 @@ import {
     setFeatureActive,
     teachers,
 } from "./data";
+import type { TeacherResponse } from "@/api/types";
 import type {
     AuthRequest,
     BatchFeatureRequest,
@@ -28,6 +29,10 @@ function requireAuth(request: Request) {
     const auth = request.headers.get("Authorization");
     if (!auth?.startsWith("Bearer ")) return null;
     return getTeacherFromToken(auth.slice(7));
+}
+
+function safeTeacher(t: { id: string; username: string; fullName: string; role: string; createdAt: number }): TeacherResponse {
+    return { id: t.id, username: t.username, fullName: t.fullName, role: t.role, createdAt: t.createdAt };
 }
 
 function unauthorized() {
@@ -71,8 +76,7 @@ export const handlers = [
         await delay(100);
         const teacher = requireAuth(request);
         if (!teacher) return unauthorized();
-        const { password: _, assignedLocations: __, ...safe } = teacher;
-        return HttpResponse.json(safe);
+        return HttpResponse.json(safeTeacher(teacher));
     }),
 
     // ================================================================
@@ -348,9 +352,7 @@ export const handlers = [
     http.get(`${API}/api/v1/teachers`, async ({ request }) => {
         await delay(100);
         if (!requireAuth(request)) return unauthorized();
-        return HttpResponse.json(
-            teachers.map(({ password: _, assignedLocations: __, ...t }) => t),
-        );
+        return HttpResponse.json(teachers.map(safeTeacher));
     }),
 
     http.get(`${API}/api/v1/teachers/:id`, async ({ params, request }) => {
@@ -358,8 +360,7 @@ export const handlers = [
         if (!requireAuth(request)) return unauthorized();
         const t = teachers.find((t) => t.id === params.id);
         if (!t) return HttpResponse.json({ status: 404, title: "Not found" }, { status: 404 });
-        const { password: _, assignedLocations: __, ...safe } = t;
-        return HttpResponse.json(safe);
+        return HttpResponse.json(safeTeacher(t));
     }),
 
     http.post(`${API}/api/v1/teachers`, async ({ request }) => {
@@ -376,8 +377,7 @@ export const handlers = [
             assignedLocations: [] as string[],
         };
         teachers.push(t);
-        const { password: _, assignedLocations: __, ...safe } = t;
-        return HttpResponse.json(safe, { status: 201 });
+        return HttpResponse.json(safeTeacher(t), { status: 201 });
     }),
 
     http.put(`${API}/api/v1/teachers/:id`, async ({ params, request }) => {
@@ -389,8 +389,7 @@ export const handlers = [
         if (body.fullName !== undefined) t.fullName = body.fullName;
         if (body.role !== undefined) t.role = body.role;
         if (body.password !== undefined) t.password = body.password;
-        const { password: _, assignedLocations: __, ...safe } = t;
-        return HttpResponse.json(safe);
+        return HttpResponse.json(safeTeacher(t));
     }),
 
     http.delete(`${API}/api/v1/teachers/:id`, async ({ params, request }) => {
