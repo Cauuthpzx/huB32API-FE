@@ -199,6 +199,9 @@
       "filterByTeacher": "按教师筛选"
     }
   },
+  "detail": {
+    "navHint": "← → 切换电脑 · ESC 关闭"
+  },
   "stream": {
     "connecting": "正在连接...",
     "connected": "已连接",

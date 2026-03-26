@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useRoomStore } from "@/stores/room.store";
 import { ComputerCard } from "./ComputerCard";
+import { ComputerDetail } from "./ComputerDetail";
 
 export function ComputerGrid() {
     const { t } = useTranslation();
@@ -8,6 +9,8 @@ export function ComputerGrid() {
     const selectedComputerIds = useRoomStore((s) => s.selectedComputerIds);
     const isLoadingComputers = useRoomStore((s) => s.isLoadingComputers);
     const toggleComputer = useRoomStore((s) => s.toggleComputer);
+    const selectedDetailId = useRoomStore((s) => s.selectedDetailId);
+    const openDetail = useRoomStore((s) => s.openDetail);
 
     if (isLoadingComputers) {
         return (
@@ -40,23 +43,26 @@ export function ComputerGrid() {
         );
     }
 
-    function handleCardClick(_id: string) {
-        // TODO(hub32): open computer detail panel
-    }
+    const detailComputer = selectedDetailId
+        ? computers.find((c) => c.id === selectedDetailId) ?? null
+        : null;
 
     return (
-        <div className="h-full overflow-y-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1.5 p-2">
-                {computers.map((pc) => (
-                    <ComputerCard
-                        key={pc.id}
-                        computer={pc}
-                        isSelected={selectedComputerIds.has(pc.id)}
-                        onSelect={toggleComputer}
-                        onClick={handleCardClick}
-                    />
-                ))}
+        <>
+            <div className="h-full overflow-y-auto">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1.5 p-2">
+                    {computers.map((pc) => (
+                        <ComputerCard
+                            key={pc.id}
+                            computer={pc}
+                            isSelected={selectedComputerIds.has(pc.id)}
+                            onSelect={toggleComputer}
+                            onClick={openDetail}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
+            {detailComputer && <ComputerDetail computer={detailComputer} />}
+        </>
     );
 }

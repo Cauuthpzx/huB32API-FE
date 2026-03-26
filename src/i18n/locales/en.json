@@ -199,6 +199,9 @@
       "filterByTeacher": "Filter by teacher"
     }
   },
+  "detail": {
+    "navHint": "← → to navigate · ESC to close"
+  },
   "stream": {
     "connecting": "Connecting stream...",
     "connected": "Connected",

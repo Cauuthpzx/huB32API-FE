@@ -199,6 +199,9 @@
       "filterByTeacher": "Lọc theo giáo viên"
     }
   },
+  "detail": {
+    "navHint": "← → để chuyển máy · ESC để đóng"
+  },
   "stream": {
     "connecting": "Đang kết nối stream...",
     "connected": "Đã kết nối",

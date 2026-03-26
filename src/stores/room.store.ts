@@ -30,6 +30,7 @@ interface RoomState {
     isLoadingLocations: boolean;
     isLoadingComputers: boolean;
     error: string | null;
+    selectedDetailId: string | null;
     sidebarPinned: boolean;
 
     fetchLocations: (schoolId: string) => Promise<void>;
@@ -37,6 +38,8 @@ interface RoomState {
     toggleComputer: (id: string) => void;
     selectAll: () => void;
     deselectAll: () => void;
+    openDetail: (id: string) => void;
+    closeDetail: () => void;
     togglePin: () => void;
 }
 
@@ -49,6 +52,7 @@ export const useRoomStore = create<RoomState>((set, get) => ({
     isLoadingLocations: cachedLocations.length === 0,
     isLoadingComputers: cachedComputers.length === 0,
     error: null,
+    selectedDetailId: null,
     sidebarPinned: localStorage.getItem(SIDEBAR_PIN_KEY) === "true",
 
     fetchLocations: async (schoolId: string) => {
@@ -121,6 +125,14 @@ export const useRoomStore = create<RoomState>((set, get) => ({
 
     deselectAll: () => {
         set({ selectedComputerIds: new Set() });
+    },
+
+    openDetail: (id: string) => {
+        set({ selectedDetailId: id });
+    },
+
+    closeDetail: () => {
+        set({ selectedDetailId: null });
     },
 
     togglePin: () => {
