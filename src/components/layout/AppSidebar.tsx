@@ -68,6 +68,8 @@ export function AppSidebar() {
             {/* Arrow toggle — only when not pinned */}
             {!sidebarPinned && (
                 <button
+                    type="button"
+                    aria-label={isVisible ? t("tooltip.closeSidebar") : t("tooltip.openSidebar")}
                     onClick={() => setHoverOpen((o) => !o)}
                     className={cn(
                         "fixed top-1/2 z-[var(--z-overlay)] -translate-y-1/2",
@@ -112,17 +114,19 @@ export function AppSidebar() {
             >
                 {/* ---- TOP: Logo + Pin (48px, aligns with header) ---- */}
                 <div className="flex h-12 shrink-0 items-center justify-between border-b border-[var(--bg-tertiary)] px-4">
-                    <span className="font-mono text-sm font-bold text-blue-500">
+                    <span className="font-mono text-sm font-bold text-[var(--accent-blue)]">
                         HUB32
                     </span>
                     <SmartTooltip content={sidebarPinned ? t("tooltip.unpin") : t("tooltip.pin")} position="bottom">
                         <button
+                            type="button"
+                            aria-label={sidebarPinned ? t("tooltip.unpin") : t("tooltip.pin")}
                             onClick={togglePin}
                             className={cn(
                                 "flex size-7 items-center justify-center rounded-md transition-colors",
                                 sidebarPinned
-                                    ? "bg-blue-500/15 text-blue-500"
-                                    : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800",
+                                    ? "bg-[var(--accent-subtle)] text-[var(--accent-blue)]"
+                                    : "text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
                             )}
                         >
                             {sidebarPinned ? <PanelLeftClose size={15} /> : <PanelLeft size={15} />}
@@ -137,9 +141,9 @@ export function AppSidebar() {
                         </p>
                         {isLoadingLocations ? (
                             <div className="space-y-2 px-2 py-2">
-                                <div className="h-8 animate-pulse rounded-md bg-zinc-800/60" />
-                                <div className="h-8 animate-pulse rounded-md bg-zinc-800/40" />
-                                <div className="h-8 animate-pulse rounded-md bg-zinc-800/30" />
+                                <div className="h-8 animate-pulse rounded-md bg-[var(--bg-tertiary)]" />
+                                <div className="h-8 animate-pulse rounded-md bg-[var(--bg-tertiary)]/80" />
+                                <div className="h-8 animate-pulse rounded-md bg-[var(--bg-tertiary)]/60" />
                             </div>
                         ) : locations.length === 0 ? (
                             <p className="px-2 py-4 text-sm text-[var(--text-disabled)]">
@@ -148,6 +152,7 @@ export function AppSidebar() {
                         ) : (
                             locations.map((loc) => (
                                 <button
+                                    type="button"
                                     key={loc.id}
                                     onClick={() => handleSelectRoom(loc.id)}
                                     className={cn(
@@ -174,27 +179,31 @@ export function AppSidebar() {
                 <div className="shrink-0">
                     {/* Row 1: Account */}
                     <div className="flex items-center gap-2.5 border-t border-[var(--border-default)] px-3 py-2.5">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent-blue)] text-xs font-semibold text-white">
                             {(user?.sub ?? "U").slice(0, 2).toUpperCase()}
                         </div>
                         <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-medium text-[var(--text-primary)]">
                                 {user?.sub}
                             </p>
-                            <p className="text-[10px] text-zinc-500">
+                            <p className="text-[10px] text-[var(--text-tertiary)]">
                                 {t("header.role." + (user?.role ?? "teacher"))}
                             </p>
                         </div>
                         <SmartTooltip content={t("tooltip.settings")} position="top">
                             <button
+                                type="button"
+                                aria-label={t("tooltip.settings")}
                                 onClick={() => setHoverOpen(false)}
-                                className="flex size-7 items-center justify-center rounded-md border border-[var(--border-default)] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+                                className="flex size-7 items-center justify-center rounded-md border border-[var(--border-default)] text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
                             >
                                 <Settings size={14} />
                             </button>
                         </SmartTooltip>
                         <SmartTooltip content={t("tooltip.logout")} position="top">
                             <button
+                                type="button"
+                                aria-label={t("tooltip.logout")}
                                 onClick={logout}
                                 className="flex size-7 items-center justify-center rounded-md border border-red-900/50 text-red-500 hover:text-red-400 hover:bg-red-950/40 transition-colors"
                             >
@@ -209,12 +218,14 @@ export function AppSidebar() {
                         style={{ gridTemplateColumns: user?.role === "admin" ? "1fr 1fr 1fr" : "1fr 1fr" }}
                     >
                         <button
+                            type="button"
+                            aria-label={t("header.language")}
                             onClick={() => {
                                 const idx = LANG_CYCLE.indexOf(i18n.language as typeof LANG_CYCLE[number]);
                                 const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
                                 i18n.changeLanguage(next);
                             }}
-                            className="flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-[var(--border-default)]"
+                            className="flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors border-r border-[var(--border-default)]"
                         >
                             <Languages size={16} />
                             <span className="text-[10px]">
@@ -226,8 +237,10 @@ export function AppSidebar() {
 
                         {user?.role === "admin" && (
                             <button
+                                type="button"
+                                aria-label={t("sidebar.admin")}
                                 onClick={() => { setHoverOpen(false); navigate("/admin"); }}
-                                className="flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors"
+                                className="flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors"
                             >
                                 <Shield size={16} />
                                 <span className="text-[10px]">{t("sidebar.admin")}</span>
@@ -252,6 +265,7 @@ function ThemePickerContent() {
                 const isActive = currentTheme === name;
                 return (
                     <button
+                        type="button"
                         key={name}
                         onClick={() => setTheme(name as ThemeName)}
                         className={cn(
@@ -288,8 +302,9 @@ function ThemePicker({ isAdmin }: { isAdmin?: boolean }) {
             interactive
         >
             <button
+                type="button"
                 className={cn(
-                    "flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors",
+                    "flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors",
                     isAdmin && "border-r border-[var(--border-default)]",
                 )}
             >

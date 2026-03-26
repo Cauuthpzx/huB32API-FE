@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { toast } from "sonner";
 import type { ComputerDto, LocationResponse } from "@/api/types";
 import { locationsApi } from "@/api/locations.api";
 
@@ -28,6 +29,7 @@ interface RoomState {
     selectedComputerIds: Set<string>;
     isLoadingLocations: boolean;
     isLoadingComputers: boolean;
+    error: string | null;
     sidebarPinned: boolean;
 
     fetchLocations: (schoolId: string) => Promise<void>;
@@ -46,6 +48,7 @@ export const useRoomStore = create<RoomState>((set, get) => ({
     selectedComputerIds: new Set<string>(),
     isLoadingLocations: cachedLocations.length === 0,
     isLoadingComputers: cachedComputers.length === 0,
+    error: null,
     sidebarPinned: localStorage.getItem(SIDEBAR_PIN_KEY) === "true",
 
     fetchLocations: async (schoolId: string) => {
@@ -67,7 +70,8 @@ export const useRoomStore = create<RoomState>((set, get) => ({
                 await get().selectLocation(currentId);
             }
         } catch {
-            set({ isLoadingLocations: false });
+            set({ isLoadingLocations: false, error: "fetch_locations_failed" });
+            toast.error("Failed to load rooms");
         }
     },
 
@@ -92,7 +96,8 @@ export const useRoomStore = create<RoomState>((set, get) => ({
             localStorage.setItem(COMPUTERS_CACHE_KEY, JSON.stringify(pcs));
             set({ selectedLocationId: id, computers: pcs, isLoadingComputers: false });
         } catch {
-            set({ isLoadingComputers: false });
+            set({ isLoadingComputers: false, error: "fetch_computers_failed" });
+            toast.error("Failed to load computers");
         }
     },
 

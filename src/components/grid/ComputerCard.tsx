@@ -63,7 +63,7 @@ export function ComputerCard({ computer, isSelected, onSelect, onClick }: Comput
 
             {/* Screen area — 16:9 */}
             <div className="relative aspect-video w-full bg-[var(--bg-primary)] flex items-center justify-center">
-                <Monitor size={28} className="text-zinc-700" />
+                <Monitor size={28} className="text-[var(--text-disabled)]" />
             </div>
 
             {/* Bottom bar */}
@@ -73,7 +73,7 @@ export function ComputerCard({ computer, isSelected, onSelect, onClick }: Comput
                     {computer.name}
                 </span>
                 {computer.hostname && (
-                    <span className="ml-auto truncate text-[10px] text-zinc-600">
+                    <span className="ml-auto truncate text-[10px] text-[var(--text-disabled)]">
                         {computer.hostname}
                     </span>
                 )}

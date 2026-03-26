@@ -4,7 +4,15 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>HUB32</title>
+    <script>
+      // Prevent white flash: apply cached theme background before React mounts
+      (function(){
+        var t=localStorage.getItem('hub32_theme');
+        var bg={'dark':'#09090B','sunrise':'#FAF9F7','ocean':'#F0F5FA','light':'#FFFFFF','teal':'#0B1215','coral':'#FFF5F5'};
+        document.documentElement.style.background=bg[t]||bg.dark;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

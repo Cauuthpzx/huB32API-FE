@@ -59,7 +59,9 @@
     "unpin": "Bỏ ghim sidebar",
     "settings": "Cài đặt",
     "logout": "Đăng xuất",
-    "search": "Tìm kiếm (Ctrl+K)"
+    "search": "Tìm kiếm (Ctrl+K)",
+    "openSidebar": "Mở sidebar",
+    "closeSidebar": "Đóng sidebar"
   },
   "header": {
     "role": {

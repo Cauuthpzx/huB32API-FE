@@ -12,16 +12,16 @@ export function ComputerGrid() {
     if (isLoadingComputers) {
         return (
             <div className="h-full overflow-y-auto">
-                <div className="grid grid-cols-6 gap-1.5 p-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1.5 p-2">
                     {Array.from({ length: 12 }).map((_, i) => (
                         <div
                             key={i}
                             className="flex flex-col overflow-hidden rounded-lg border border-[var(--border-default)] bg-[var(--bg-elevated)]"
                         >
-                            <div className="aspect-video w-full animate-pulse bg-zinc-800/60" />
+                            <div className="aspect-video w-full animate-pulse bg-[var(--bg-tertiary)]" />
                             <div className="flex items-center gap-2 px-2 py-1.5 border-t border-[var(--border-default)]">
-                                <div className="h-2.5 w-6 animate-pulse rounded bg-zinc-800/60" />
-                                <div className="h-2.5 w-16 animate-pulse rounded bg-zinc-800/60" />
+                                <div className="h-2.5 w-6 animate-pulse rounded bg-[var(--bg-tertiary)]" />
+                                <div className="h-2.5 w-16 animate-pulse rounded bg-[var(--bg-tertiary)]" />
                             </div>
                         </div>
                     ))}
@@ -40,13 +40,13 @@ export function ComputerGrid() {
         );
     }
 
-    function handleCardClick(id: string) {
-        console.log("Computer detail:", id);
+    function handleCardClick(_id: string) {
+        // TODO(hub32): open computer detail panel
     }
 
     return (
         <div className="h-full overflow-y-auto">
-            <div className="grid grid-cols-6 gap-1.5 p-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1.5 p-2">
                 {computers.map((pc) => (
                     <ComputerCard
                         key={pc.id}

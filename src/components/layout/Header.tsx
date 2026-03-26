@@ -19,7 +19,7 @@ export function Header() {
             {/* Left: room stats */}
             <div className="flex shrink-0 items-center">
                 {isLoadingLocations ? (
-                    <div className="h-4 w-48 animate-pulse rounded bg-zinc-800/60" />
+                    <div className="h-4 w-48 animate-pulse rounded bg-[var(--bg-tertiary)]" />
                 ) : (
                     <>
                         <h2 className="text-sm font-semibold text-[var(--text-primary)]">
@@ -29,15 +29,15 @@ export function Header() {
                         {selectedLocation && (
                             <>
                                 <span className="mx-2 text-[var(--border-strong)]">|</span>
-                                <Monitor size={14} className="text-zinc-500" />
-                                <span className="ml-1.5 text-[13px] text-zinc-400">
+                                <Monitor size={14} className="text-[var(--text-tertiary)]" />
+                                <span className="ml-1.5 text-[13px] text-[var(--text-secondary)]">
                                     {total}
                                 </span>
                                 <span className="mx-2 text-[var(--border-strong)]">|</span>
                                 <HeartbeatLine state="online" />
                                 <span className="ml-1.5 text-[13px] text-[var(--success)]">
                                     <span className="font-medium">{online}</span>
-                                    {" online"}
+                                    {" "}{t("computer.state.online").toLowerCase()}
                                 </span>
                             </>
                         )}
@@ -50,12 +50,12 @@ export function Header() {
                 <div className="relative">
                     <Search
                         size={14}
-                        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500"
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]"
                     />
                     <input
                         type="text"
                         placeholder={t("app.search")}
-                        className="h-8 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] pl-8 pr-3 text-xs text-[var(--text-primary)] placeholder:text-zinc-600 focus:border-[var(--accent-blue)] focus:outline-none"
+                        className="h-8 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] pl-8 pr-3 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-disabled)] focus:border-[var(--accent-blue)] focus:outline-none"
                     />
                 </div>
             </div>

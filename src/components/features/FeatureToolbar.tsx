@@ -31,7 +31,7 @@ export function FeatureToolbar() {
 
     return (
         <>
-            <div className="flex h-12 shrink-0 items-center gap-2 border-t border-[var(--border-default)] bg-[var(--bg-secondary)] px-3">
+            <div className="flex h-12 shrink-0 items-center gap-2 overflow-x-auto border-t border-[var(--border-default)] bg-[var(--bg-secondary)] px-3">
                 {/* Selection info */}
                 <span className="text-xs shrink-0">
                     {hasSelection ? (

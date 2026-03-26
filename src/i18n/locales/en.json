@@ -59,7 +59,9 @@
     "unpin": "Unpin sidebar",
     "settings": "Settings",
     "logout": "Logout",
-    "search": "Search (Ctrl+K)"
+    "search": "Search (Ctrl+K)",
+    "openSidebar": "Open sidebar",
+    "closeSidebar": "Close sidebar"
   },
   "header": {
     "role": {
