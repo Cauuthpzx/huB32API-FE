@@ -6,8 +6,8 @@ import App from "./App.tsx";
 
 async function bootstrap() {
     if (import.meta.env.VITE_MOCK_API === "true") {
-        const { worker } = await import("./mocks/browser");
-        await worker.start({ onUnhandledRequest: "bypass" });
+        const { startWorker } = await import("./mocks/browser");
+        await startWorker();
     }
 
     createRoot(document.getElementById("root")!).render(
