@@ -5,6 +5,7 @@ import type {
     LocationDto,
     LocationListDto,
     LocationResponse,
+    LocationV1ListDto,
 } from "./types";
 
 export const locationsApi = {
@@ -13,15 +14,15 @@ export const locationsApi = {
     create: (schoolId: string, data: Omit<CreateLocationRequest, "schoolId">) =>
         client
             .post<LocationResponse>(
-                `/api/v1/schools/${schoolId}/locations`,
+                `/api/v1/locations`,
                 { ...data, schoolId },
             )
             .then((r) => r.data),
 
-    getBySchool: (schoolId: string) =>
+    getBySchool: (_schoolId: string) =>
         client
-            .get<LocationResponse[]>(`/api/v1/schools/${schoolId}/locations`)
-            .then((r) => r.data),
+            .get<LocationV1ListDto>(`/api/v1/locations`)
+            .then((r) => r.data.locations),
 
     getById: (id: string) =>
         client

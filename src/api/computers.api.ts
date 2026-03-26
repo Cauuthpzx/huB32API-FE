@@ -33,9 +33,7 @@ export const computersApi = {
         id: string,
         params?: { width?: number; height?: number; format?: "png" | "jpeg"; quality?: number },
     ) => {
-        const apiBase = import.meta.env.VITE_MOCK_API === "true"
-            ? ""
-            : (import.meta.env.VITE_API_URL as string);
+        const apiBase = (import.meta.env.VITE_API_URL as string) || "";
         const base = `${apiBase}/api/v1/computers/${id}/framebuffer`;
         const query = new URLSearchParams();
         if (params?.width) query.set("width", String(params.width));

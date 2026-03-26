@@ -3,9 +3,7 @@ import axios from "axios";
 const TOKEN_KEY = "hub32_token";
 
 const client = axios.create({
-    baseURL: import.meta.env.VITE_MOCK_API === "true"
-        ? ""
-        : ((import.meta.env.VITE_API_URL as string) || "http://localhost:11081"),
+    baseURL: (import.meta.env.VITE_API_URL as string) || "http://localhost:11081",
     timeout: 10_000,
     headers: {
         "Content-Type": "application/json",

@@ -182,6 +182,10 @@ export interface LocationListDto {
     total: number;
 }
 
+export interface LocationV1ListDto {
+    locations: LocationResponse[];
+}
+
 // ---- Teacher ----
 
 export interface CreateTeacherRequest {
@@ -326,8 +330,10 @@ export interface IceServer {
 export interface ComputerStateDto {
     id: string;
     hostname: string;
-    online: boolean;
+    state: string;
+    reachable: boolean;
     latencyMs: number;
+    pingLatencyMs: number;
 }
 
 // ---- Health (v2) ----
