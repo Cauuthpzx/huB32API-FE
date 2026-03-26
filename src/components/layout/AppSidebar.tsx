@@ -3,22 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRoomStore } from "@/stores/room.store";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import {
     ChevronRight,
+    Languages,
     LogOut,
     Monitor,
+    Moon,
     Settings,
     Shield,
-    User,
 } from "lucide-react";
-import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 
+const LANG_CYCLE = ["vi", "en", "zh"] as const;
+const LANG_LABELS: Record<string, string> = { vi: "Tiếng Việt", en: "English", zh: "中文" };
+
 export function AppSidebar() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const user = useAuthStore((s) => s.user);
     const logout = useAuthStore((s) => s.logout);
@@ -129,58 +130,80 @@ export function AppSidebar() {
                     )}
                 </div>
 
-                <Separator />
-
-                {/* Account + actions */}
-                <div className="px-3 py-3">
-                    {/* Avatar + name + role */}
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--bg-hover)]">
-                            <User className="size-4 text-[var(--text-secondary)]" />
+                {/* ---- Footer ---- */}
+                <div className="shrink-0">
+                    {/* Row 1: Account — avatar + name/role + settings + logout */}
+                    <div className="flex items-center gap-2.5 border-t border-zinc-800 px-3 py-2.5">
+                        {/* Avatar (blue, initials) */}
+                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
+                            {(user?.sub ?? "U").slice(0, 2).toUpperCase()}
                         </div>
-                        <div className="min-w-0">
+                        {/* Name + role */}
+                        <div className="min-w-0 flex-1">
                             <p className="truncate text-sm font-medium text-[var(--text-primary)]">
                                 {user?.sub}
                             </p>
-                            <p className="text-xs text-[var(--text-tertiary)]">
+                            <p className="text-[10px] text-zinc-500">
                                 {t("header.role." + (user?.role ?? "teacher"))}
                             </p>
                         </div>
+                        {/* Settings button */}
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="flex size-7 items-center justify-center rounded-md border border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+                        >
+                            <Settings size={14} />
+                        </button>
+                        {/* Logout button */}
+                        <button
+                            onClick={logout}
+                            className="flex size-7 items-center justify-center rounded-md border border-red-900/50 text-red-500 hover:text-red-400 hover:bg-red-950/40 transition-colors"
+                        >
+                            <LogOut size={14} />
+                        </button>
                     </div>
 
-                    {/* Action buttons */}
-                    <div className="space-y-0.5">
-                        <LanguageSwitcher />
-                        <Button
-                            variant="ghost"
-                            className="w-full justify-start gap-2 text-[var(--text-secondary)]"
-                            onClick={() => setIsOpen(false)}
+                    {/* Row 2: Quick actions — 3 equal columns */}
+                    <div
+                        className="grid border-t border-zinc-800"
+                        style={{ gridTemplateColumns: user?.role === "admin" ? "1fr 1fr 1fr" : "1fr 1fr" }}
+                    >
+                        {/* Language */}
+                        <button
+                            onClick={() => {
+                                const idx = LANG_CYCLE.indexOf(i18n.language as typeof LANG_CYCLE[number]);
+                                const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
+                                i18n.changeLanguage(next);
+                            }}
+                            className="flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-zinc-800"
                         >
-                            <Settings className="size-4" />
-                            {t("header.settings")}
-                        </Button>
+                            <Languages size={16} />
+                            <span className="text-[10px]">
+                                {LANG_LABELS[i18n.language] ?? t("header.language")}
+                            </span>
+                        </button>
 
+                        {/* Theme (placeholder) */}
+                        <button
+                            className={cn(
+                                "flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors",
+                                user?.role === "admin" && "border-r border-zinc-800",
+                            )}
+                        >
+                            <Moon size={16} />
+                            <span className="text-[10px]">{t("header.settings")}</span>
+                        </button>
+
+                        {/* Admin (admin only) */}
                         {user?.role === "admin" && (
-                            <Button
-                                variant="ghost"
-                                className="w-full justify-start gap-2 text-[var(--text-secondary)]"
+                            <button
                                 onClick={() => { setIsOpen(false); navigate("/admin"); }}
+                                className="flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors"
                             >
-                                <Shield className="size-4" />
-                                {t("sidebar.admin")}
-                            </Button>
+                                <Shield size={16} />
+                                <span className="text-[10px]">{t("sidebar.admin")}</span>
+                            </button>
                         )}
-
-                        <Separator className="my-1" />
-
-                        <Button
-                            variant="ghost"
-                            className="w-full justify-start gap-2 text-[var(--danger)] hover:text-[var(--danger)] hover:bg-[var(--danger-subtle)]"
-                            onClick={logout}
-                        >
-                            <LogOut className="size-4" />
-                            {t("auth.logout")}
-                        </Button>
                     </div>
                 </div>
             </aside>
