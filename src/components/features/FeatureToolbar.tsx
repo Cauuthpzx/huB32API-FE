@@ -39,10 +39,10 @@ interface ToolbarBtnProps {
 
 function ToolbarBtn({ icon, label, onClick, disabled, variant = "default" }: ToolbarBtnProps) {
     const styles = {
-        default: "border-[var(--border-default)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]",
-        accent: "border-[var(--accent-blue)] bg-[var(--accent-blue)] text-white hover:opacity-90",
-        success: "border-emerald-600/50 text-emerald-400 hover:bg-emerald-600/20",
-        danger: "border-red-600/50 text-red-400 hover:bg-red-600/20",
+        default: "border border-[var(--border-default)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]",
+        accent: "border border-[var(--accent-blue)] bg-[var(--accent-blue)] text-white hover:opacity-90",
+        success: "border border-emerald-600/50 text-emerald-400 hover:bg-emerald-600/20",
+        danger: "border border-red-600/50 text-red-400 hover:bg-red-600/20",
     };
 
     return (
@@ -52,7 +52,7 @@ function ToolbarBtn({ icon, label, onClick, disabled, variant = "default" }: Too
                 disabled={disabled}
                 onClick={(e) => animateClick(e, onClick)}
                 className={cn(
-                    "flex size-10 shrink-0 items-center justify-center rounded-md border transition-colors active:scale-95",
+                    "flex size-10 shrink-0 items-center justify-center rounded-md p-0 transition-colors active:scale-95",
                     styles[variant],
                     disabled && "opacity-40 cursor-not-allowed pointer-events-none",
                 )}
@@ -96,21 +96,21 @@ export function FeatureToolbar() {
 
                 {/* Center: icon buttons */}
                 <div className="flex flex-1 items-center justify-center gap-1.5 overflow-x-auto">
-                    <ToolbarBtn icon={<CheckSquare size={20} />} label={t("grid.selectAll")} onClick={selectAll} />
-                    <ToolbarBtn icon={<XSquare size={20} />} label={t("grid.deselectAll")} onClick={deselectAll} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<CheckSquare size={25} />} label={t("grid.selectAll")} onClick={selectAll} />
+                    <ToolbarBtn icon={<XSquare size={25} />} label={t("grid.deselectAll")} onClick={deselectAll} disabled={!hasSelection} />
 
                     <div className="mx-1 h-6 w-px shrink-0 bg-[var(--border-default)]" />
 
-                    <ToolbarBtn icon={<Lock size={20} />} label={t("feature.lock.title")} onClick={() => setOpenDialog("lock")} disabled={!hasSelection} variant="accent" />
-                    <ToolbarBtn icon={<Unlock size={20} />} label={t("feature.lock.unlock")} onClick={() => setOpenDialog("unlock")} disabled={!hasSelection} />
-                    <ToolbarBtn icon={<MessageSquare size={20} />} label={t("feature.message.title")} onClick={() => setOpenDialog("message")} disabled={!hasSelection} />
-                    <ToolbarBtn icon={<MousePointerBan size={20} />} label={t("feature.inputLock.title")} onClick={() => {}} disabled={!hasSelection} />
-                    <ToolbarBtn icon={<MonitorPlay size={20} />} label={t("feature.demo.title")} onClick={() => {}} disabled={!hasSelection} variant="success" />
+                    <ToolbarBtn icon={<Lock size={25} />} label={t("feature.lock.title")} onClick={() => setOpenDialog("lock")} disabled={!hasSelection} variant="accent" />
+                    <ToolbarBtn icon={<Unlock size={25} />} label={t("feature.lock.unlock")} onClick={() => setOpenDialog("unlock")} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<MessageSquare size={25} />} label={t("feature.message.title")} onClick={() => setOpenDialog("message")} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<MousePointerBan size={25} />} label={t("feature.inputLock.title")} onClick={() => {}} disabled={!hasSelection} />
+                    <ToolbarBtn icon={<MonitorPlay size={25} />} label={t("feature.demo.title")} onClick={() => {}} disabled={!hasSelection} variant="success" />
 
                     <div className="mx-1 h-6 w-px shrink-0 bg-[var(--border-default)]" />
 
-                    <ToolbarBtn icon={<Power size={20} />} label={t("feature.power.shutdown")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
-                    <ToolbarBtn icon={<RotateCcw size={20} />} label={t("feature.power.reboot")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
+                    <ToolbarBtn icon={<Power size={25} />} label={t("feature.power.shutdown")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
+                    <ToolbarBtn icon={<RotateCcw size={25} />} label={t("feature.power.reboot")} onClick={() => setOpenDialog("power")} disabled={!hasSelection} variant="danger" />
                 </div>
 
                 {/* Right: spacer for centering */}
