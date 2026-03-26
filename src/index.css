@@ -60,21 +60,21 @@
 
 /* ---- HUB32 Dark Theme (default) ---- */
 :root {
-    /* Core palette */
-    --bg-primary: #0A0A0B;
-    --bg-secondary: #141416;
+    /* Core palette — matches dark theme in themes.ts */
+    --bg-primary: #09090B;
+    --bg-secondary: #111113;
     --bg-tertiary: #1C1C1F;
-    --bg-elevated: #222226;
+    --bg-elevated: #18181B;
     --bg-hover: #2A2A2E;
     --bg-active: #333338;
 
-    --border-default: #2A2A2E;
+    --border-default: #27272A;
     --border-subtle: #1F1F23;
     --border-strong: #3A3A40;
 
     --text-primary: #FAFAFA;
-    --text-secondary: #A0A0A8;
-    --text-tertiary: #6B6B73;
+    --text-secondary: #A1A1AA;
+    --text-tertiary: #71717A;
     --text-disabled: #4A4A52;
 
     --accent-blue: #3B82F6;
@@ -178,6 +178,12 @@
     * {
         @apply border-border outline-ring/50;
     }
+    html, body, #root {
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
     body {
         background: var(--bg-primary);
         color: var(--text-primary);
@@ -185,7 +191,6 @@
         font-size: var(--text-base);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        margin: 0;
     }
     html {
         @apply font-sans;

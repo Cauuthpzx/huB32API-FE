@@ -3,19 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores/auth.store";
 import { useRoomStore } from "@/stores/room.store";
+import { useThemeStore } from "@/stores/theme.store";
+import { THEMES, THEME_NAMES, type ThemeName } from "@/lib/themes";
 import { Badge } from "@/components/ui/badge";
 import {
     ChevronRight,
     Languages,
     LogOut,
     Monitor,
-    Moon,
+    Palette,
     PanelLeft,
     PanelLeftClose,
     Settings,
     Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SmartTooltip } from "@/components/shared/SmartTooltip";
 
 const LANG_CYCLE = ["vi", "en", "zh"] as const;
 const LANG_LABELS: Record<string, string> = { vi: "Tiếng Việt", en: "English", zh: "中文" };
@@ -70,7 +73,7 @@ export function AppSidebar() {
                         "fixed top-1/2 z-[var(--z-overlay)] -translate-y-1/2",
                         "flex h-20 w-5 items-center justify-center",
                         "rounded-r-md border border-l-0",
-                        "bg-[#141416] border-[#2A2A2E]",
+                        "bg-[var(--bg-secondary)] border-[var(--border-default)]",
                         "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]",
                         "transition-all duration-200",
                         isVisible ? "left-[220px]" : "left-0",
@@ -108,22 +111,23 @@ export function AppSidebar() {
                 }}
             >
                 {/* ---- TOP: Logo + Pin (48px, aligns with header) ---- */}
-                <div className="flex h-12 shrink-0 items-center justify-between border-b border-[#1C1C1F] px-4">
+                <div className="flex h-12 shrink-0 items-center justify-between border-b border-[var(--bg-tertiary)] px-4">
                     <span className="font-mono text-sm font-bold text-blue-500">
                         HUB32
                     </span>
-                    <button
-                        onClick={togglePin}
-                        title={sidebarPinned ? t("sidebar.unpin") : t("sidebar.pin")}
-                        className={cn(
-                            "flex size-7 items-center justify-center rounded-md transition-colors",
-                            sidebarPinned
-                                ? "bg-blue-500/15 text-blue-500"
-                                : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800",
-                        )}
-                    >
-                        {sidebarPinned ? <PanelLeftClose size={15} /> : <PanelLeft size={15} />}
-                    </button>
+                    <SmartTooltip content={sidebarPinned ? t("tooltip.unpin") : t("tooltip.pin")} position="bottom">
+                        <button
+                            onClick={togglePin}
+                            className={cn(
+                                "flex size-7 items-center justify-center rounded-md transition-colors",
+                                sidebarPinned
+                                    ? "bg-blue-500/15 text-blue-500"
+                                    : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800",
+                            )}
+                        >
+                            {sidebarPinned ? <PanelLeftClose size={15} /> : <PanelLeft size={15} />}
+                        </button>
+                    </SmartTooltip>
                 </div>
 
                 {/* ---- MIDDLE: rooms right below logo (flex:1, scrollable) ---- */}
@@ -169,7 +173,7 @@ export function AppSidebar() {
                 {/* ---- BOTTOM: Account + 3 action columns ---- */}
                 <div className="shrink-0">
                     {/* Row 1: Account */}
-                    <div className="flex items-center gap-2.5 border-t border-[#27272A] px-3 py-2.5">
+                    <div className="flex items-center gap-2.5 border-t border-[var(--border-default)] px-3 py-2.5">
                         <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
                             {(user?.sub ?? "U").slice(0, 2).toUpperCase()}
                         </div>
@@ -181,23 +185,27 @@ export function AppSidebar() {
                                 {t("header.role." + (user?.role ?? "teacher"))}
                             </p>
                         </div>
-                        <button
-                            onClick={() => setHoverOpen(false)}
-                            className="flex size-7 items-center justify-center rounded-md border border-[#27272A] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
-                        >
-                            <Settings size={14} />
-                        </button>
-                        <button
-                            onClick={logout}
-                            className="flex size-7 items-center justify-center rounded-md border border-red-900/50 text-red-500 hover:text-red-400 hover:bg-red-950/40 transition-colors"
-                        >
-                            <LogOut size={14} />
-                        </button>
+                        <SmartTooltip content={t("tooltip.settings")} position="top">
+                            <button
+                                onClick={() => setHoverOpen(false)}
+                                className="flex size-7 items-center justify-center rounded-md border border-[var(--border-default)] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+                            >
+                                <Settings size={14} />
+                            </button>
+                        </SmartTooltip>
+                        <SmartTooltip content={t("tooltip.logout")} position="top">
+                            <button
+                                onClick={logout}
+                                className="flex size-7 items-center justify-center rounded-md border border-red-900/50 text-red-500 hover:text-red-400 hover:bg-red-950/40 transition-colors"
+                            >
+                                <LogOut size={14} />
+                            </button>
+                        </SmartTooltip>
                     </div>
 
                     {/* Row 2: Quick actions — h-12 matches toolbar height */}
                     <div
-                        className="grid h-12 border-t border-[#27272A]"
+                        className="grid h-12 border-t border-[var(--border-default)]"
                         style={{ gridTemplateColumns: user?.role === "admin" ? "1fr 1fr 1fr" : "1fr 1fr" }}
                     >
                         <button
@@ -206,7 +214,7 @@ export function AppSidebar() {
                                 const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
                                 i18n.changeLanguage(next);
                             }}
-                            className="flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-[#27272A]"
+                            className="flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-[var(--border-default)]"
                         >
                             <Languages size={16} />
                             <span className="text-[10px]">
@@ -214,15 +222,7 @@ export function AppSidebar() {
                             </span>
                         </button>
 
-                        <button
-                            className={cn(
-                                "flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors",
-                                user?.role === "admin" && "border-r border-[#27272A]",
-                            )}
-                        >
-                            <Moon size={16} />
-                            <span className="text-[10px]">{t("sidebar.theme")}</span>
-                        </button>
+                        <ThemePicker isAdmin={user?.role === "admin"} />
 
                         {user?.role === "admin" && (
                             <button
@@ -237,5 +237,65 @@ export function AppSidebar() {
                 </div>
             </aside>
         </>
+    );
+}
+
+function ThemePickerContent() {
+    const { t } = useTranslation();
+    const currentTheme = useThemeStore((s) => s.currentTheme);
+    const setTheme = useThemeStore((s) => s.setTheme);
+
+    return (
+        <div className="grid grid-cols-3 gap-1.5" style={{ padding: 4 }}>
+            {THEME_NAMES.map((name) => {
+                const colors = THEMES[name];
+                const isActive = currentTheme === name;
+                return (
+                    <button
+                        key={name}
+                        onClick={() => setTheme(name as ThemeName)}
+                        className={cn(
+                            "flex flex-col items-center gap-1 rounded-lg p-2 text-[10px] transition-all",
+                            isActive
+                                ? "ring-2 ring-[var(--accent-blue)] shadow-[0_0_8px_rgba(59,130,246,0.3)]"
+                                : "hover:bg-[var(--bg-hover)] hover:scale-105",
+                        )}
+                    >
+                        <div
+                            className="size-8 rounded-md shadow-md"
+                            style={{
+                                background: `linear-gradient(135deg, ${colors["--bg-primary"]} 40%, ${colors["--accent-blue"]} 100%)`,
+                                border: `2px solid ${colors["--accent-blue"]}`,
+                                boxShadow: `0 2px 8px ${colors["--accent-blue"]}40`,
+                            }}
+                        />
+                        <span className="whitespace-nowrap font-medium">{t(`theme.${name}`)}</span>
+                    </button>
+                );
+            })}
+        </div>
+    );
+}
+
+function ThemePicker({ isAdmin }: { isAdmin?: boolean }) {
+    const { t } = useTranslation();
+
+    return (
+        <SmartTooltip
+            content={<ThemePickerContent />}
+            position="top"
+            delay={200}
+            interactive
+        >
+            <button
+                className={cn(
+                    "flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors",
+                    isAdmin && "border-r border-[var(--border-default)]",
+                )}
+            >
+                <Palette size={16} />
+                <span className="text-[10px]">{t("sidebar.theme")}</span>
+            </button>
+        </SmartTooltip>
     );
 }

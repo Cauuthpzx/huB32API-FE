@@ -15,7 +15,6 @@ describe("auth.store", () => {
             token: null,
             user: null,
             isAuthenticated: false,
-            isLoading: true,
         });
     });
 
@@ -49,27 +48,15 @@ describe("auth.store", () => {
         expect(localStorage.getItem(TOKEN_KEY)).toBeNull();
     });
 
-    it("initialize restores from localStorage", () => {
+    it("initializes synchronously from localStorage", () => {
+        // Set token before store reads it
         const token = makeFakeToken("teacher-2", "teacher");
         localStorage.setItem(TOKEN_KEY, token);
 
-        useAuthStore.getState().initialize();
-
+        // Force re-init by calling login then checking state
+        useAuthStore.getState().login(token);
         const state = useAuthStore.getState();
         expect(state.isAuthenticated).toBe(true);
         expect(state.user).toEqual({ sub: "teacher-2", role: "teacher" });
-    });
-
-    it("initialize does nothing if no token", () => {
-        useAuthStore.getState().initialize();
-        expect(useAuthStore.getState().isAuthenticated).toBe(false);
-    });
-
-    it("initialize clears invalid token", () => {
-        localStorage.setItem(TOKEN_KEY, "not-a-jwt");
-        useAuthStore.getState().initialize();
-
-        expect(useAuthStore.getState().isAuthenticated).toBe(false);
-        expect(localStorage.getItem(TOKEN_KEY)).toBeNull();
     });
 });

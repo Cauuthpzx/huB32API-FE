@@ -46,6 +46,21 @@
     "unpin": "取消固定",
     "theme": "主题"
   },
+  "theme": {
+    "dark": "深色",
+    "sunrise": "暖阳",
+    "ocean": "海蓝",
+    "light": "浅色",
+    "teal": "青绿",
+    "coral": "珊瑚"
+  },
+  "tooltip": {
+    "pin": "固定侧栏",
+    "unpin": "取消固定侧栏",
+    "settings": "设置",
+    "logout": "退出登录",
+    "search": "搜索 (Ctrl+K)"
+  },
   "header": {
     "role": {
       "admin": "管理员",
@@ -89,6 +104,7 @@
   },
   "feature": {
     "toolbar": "控制面板",
+    "selectToControl": "选择电脑以进行控制",
     "lock": {
       "title": "锁屏",
       "lock": "锁定",

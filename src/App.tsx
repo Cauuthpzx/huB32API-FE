@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LoginPage } from "@/pages/LoginPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { AdminPage } from "@/pages/AdminPage";
 import { ProtectedRoute } from "@/components/shared/ProtectedRoute";
-import { useAuthStore } from "@/stores/auth.store";
+import { Toaster } from "sonner";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -16,36 +15,25 @@ const queryClient = new QueryClient({
     },
 });
 
-function AppRoutes() {
-    const initialize = useAuthStore((s) => s.initialize);
-
-    useEffect(() => {
-        initialize();
-    }, [initialize]);
-
-    return (
-        <Routes>
-            <Route path="/login" element={<LoginPage />} />
-
-            <Route element={<ProtectedRoute />}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-            </Route>
-
-            <Route element={<ProtectedRoute requiredRole="admin" />}>
-                <Route path="/admin" element={<AdminPage />} />
-            </Route>
-
-            <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-    );
-}
-
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <AppRoutes />
+                <Routes>
+                    <Route path="/login" element={<LoginPage />} />
+
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/dashboard" element={<DashboardPage />} />
+                    </Route>
+
+                    <Route element={<ProtectedRoute requiredRole="admin" />}>
+                        <Route path="/admin" element={<AdminPage />} />
+                    </Route>
+
+                    <Route path="*" element={<Navigate to="/login" replace />} />
+                </Routes>
             </BrowserRouter>
+            <Toaster position="top-right" theme="dark" richColors />
         </QueryClientProvider>
     );
 }

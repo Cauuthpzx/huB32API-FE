@@ -15,7 +15,7 @@ export function Header() {
     const online = computers.filter((c) => c.state !== "offline").length;
 
     return (
-        <header className="relative flex h-12 shrink-0 items-center border-b border-[#1C1C1F] bg-[#111113] px-4">
+        <header className="relative flex h-12 shrink-0 items-center border-b border-[var(--border-default)] bg-[var(--bg-secondary)] px-4">
             {/* Left: room stats */}
             <div className="flex shrink-0 items-center">
                 {isLoadingLocations ? (
@@ -28,14 +28,14 @@ export function Header() {
 
                         {selectedLocation && (
                             <>
-                                <span className="mx-2 text-[#3F3F46]">|</span>
+                                <span className="mx-2 text-[var(--border-strong)]">|</span>
                                 <Monitor size={14} className="text-zinc-500" />
                                 <span className="ml-1.5 text-[13px] text-zinc-400">
                                     {total}
                                 </span>
-                                <span className="mx-2 text-[#3F3F46]">|</span>
+                                <span className="mx-2 text-[var(--border-strong)]">|</span>
                                 <HeartbeatLine state="online" />
-                                <span className="ml-1.5 text-[13px] text-[#22C55E]">
+                                <span className="ml-1.5 text-[13px] text-[var(--success)]">
                                     <span className="font-medium">{online}</span>
                                     {" online"}
                                 </span>
@@ -55,7 +55,7 @@ export function Header() {
                     <input
                         type="text"
                         placeholder={t("app.search")}
-                        className="h-8 w-full rounded-md border border-[#27272A] bg-[#18181B] pl-8 pr-3 text-xs text-[var(--text-primary)] placeholder:text-zinc-600 focus:border-[#3B82F6] focus:outline-none"
+                        className="h-8 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] pl-8 pr-3 text-xs text-[var(--text-primary)] placeholder:text-zinc-600 focus:border-[var(--accent-blue)] focus:outline-none"
                     />
                 </div>
             </div>

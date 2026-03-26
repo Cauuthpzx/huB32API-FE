@@ -46,6 +46,21 @@
     "unpin": "Unpin sidebar",
     "theme": "Theme"
   },
+  "theme": {
+    "dark": "Dark",
+    "sunrise": "Sunrise",
+    "ocean": "Ocean",
+    "light": "Light",
+    "teal": "Teal",
+    "coral": "Coral"
+  },
+  "tooltip": {
+    "pin": "Pin sidebar",
+    "unpin": "Unpin sidebar",
+    "settings": "Settings",
+    "logout": "Logout",
+    "search": "Search (Ctrl+K)"
+  },
   "header": {
     "role": {
       "admin": "Administrator",
@@ -89,6 +104,7 @@
   },
   "feature": {
     "toolbar": "Controls",
+    "selectToControl": "Select computers to control",
     "lock": {
       "title": "Lock Screen",
       "lock": "Lock",

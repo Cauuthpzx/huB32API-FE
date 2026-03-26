@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authApi } from "@/api/auth.api";
 import { useAuthStore } from "@/stores/auth.store";
-import { Loader2 } from "lucide-react";
+import { Spinner } from "@/components/shared/Spinner";
 
 export function LoginForm() {
     const { t } = useTranslation();
@@ -81,7 +81,7 @@ export function LoginForm() {
             >
                 {mutation.isPending ? (
                     <>
-                        <Loader2 className="animate-spin" />
+                        <Spinner size={20} />
                         {t("auth.loggingIn")}
                     </>
                 ) : (

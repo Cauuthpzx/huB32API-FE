@@ -3,6 +3,23 @@ import type { ComputerDto, LocationResponse } from "@/api/types";
 import { locationsApi } from "@/api/locations.api";
 
 const SIDEBAR_PIN_KEY = "hub32_sidebar_pinned";
+const LOCATIONS_CACHE_KEY = "hub32_locations";
+const SELECTED_LOCATION_KEY = "hub32_selected_location";
+const COMPUTERS_CACHE_KEY = "hub32_computers";
+
+function readJson<T>(key: string): T | null {
+    try {
+        const raw = localStorage.getItem(key);
+        return raw ? (JSON.parse(raw) as T) : null;
+    } catch {
+        return null;
+    }
+}
+
+// Restore cached state synchronously at store creation — zero flicker
+const cachedLocations = readJson<LocationResponse[]>(LOCATIONS_CACHE_KEY) ?? [];
+const cachedLocationId = localStorage.getItem(SELECTED_LOCATION_KEY);
+const cachedComputers = readJson<ComputerDto[]>(COMPUTERS_CACHE_KEY) ?? [];
 
 interface RoomState {
     locations: LocationResponse[];
@@ -22,21 +39,32 @@ interface RoomState {
 }
 
 export const useRoomStore = create<RoomState>((set, get) => ({
-    locations: [],
-    selectedLocationId: null,
-    computers: [],
+    // Start with cached data — no loading state if cache exists
+    locations: cachedLocations,
+    selectedLocationId: cachedLocationId,
+    computers: cachedComputers,
     selectedComputerIds: new Set<string>(),
-    isLoadingLocations: true,
-    isLoadingComputers: true,
+    isLoadingLocations: cachedLocations.length === 0,
+    isLoadingComputers: cachedComputers.length === 0,
     sidebarPinned: localStorage.getItem(SIDEBAR_PIN_KEY) === "true",
 
     fetchLocations: async (schoolId: string) => {
-        set({ isLoadingLocations: true });
+        // Only show loading if no cached data
+        if (get().locations.length === 0) {
+            set({ isLoadingLocations: true });
+        }
         try {
             const locs = await locationsApi.getBySchool(schoolId);
+            localStorage.setItem(LOCATIONS_CACHE_KEY, JSON.stringify(locs));
             set({ locations: locs, isLoadingLocations: false });
-            if (locs.length > 0 && !get().selectedLocationId) {
+
+            // Auto-select first location if none selected
+            const currentId = get().selectedLocationId;
+            if (locs.length > 0 && (!currentId || !locs.some((l) => l.id === currentId))) {
                 await get().selectLocation(locs[0].id);
+            } else if (currentId) {
+                // Refresh computers for current selection
+                await get().selectLocation(currentId);
             }
         } catch {
             set({ isLoadingLocations: false });
@@ -44,15 +72,25 @@ export const useRoomStore = create<RoomState>((set, get) => ({
     },
 
     selectLocation: async (id: string) => {
-        set({
-            selectedLocationId: id,
-            computers: [],
-            selectedComputerIds: new Set(),
-            isLoadingComputers: true,
-        });
+        localStorage.setItem(SELECTED_LOCATION_KEY, id);
+
+        // Only clear + show loading if switching to a different room with no cache
+        const prevId = get().selectedLocationId;
+        if (prevId !== id) {
+            set({
+                selectedLocationId: id,
+                computers: [],
+                selectedComputerIds: new Set(),
+                isLoadingComputers: true,
+            });
+        } else if (get().computers.length === 0) {
+            set({ isLoadingComputers: true });
+        }
+
         try {
             const pcs = await locationsApi.getComputers(id);
-            set({ computers: pcs, isLoadingComputers: false });
+            localStorage.setItem(COMPUTERS_CACHE_KEY, JSON.stringify(pcs));
+            set({ selectedLocationId: id, computers: pcs, isLoadingComputers: false });
         } catch {
             set({ isLoadingComputers: false });
         }

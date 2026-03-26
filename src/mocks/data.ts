@@ -45,7 +45,7 @@ export const locations: LocationResponse[] = [
         name: "Phòng Máy 1",
         building: "A",
         floor: 2,
-        capacity: 30,
+        capacity: 24,
         type: "classroom",
     },
     {
@@ -54,7 +54,7 @@ export const locations: LocationResponse[] = [
         name: "Phòng Máy 2",
         building: "A",
         floor: 3,
-        capacity: 25,
+        capacity: 20,
         type: "classroom",
     },
     {
@@ -63,12 +63,12 @@ export const locations: LocationResponse[] = [
         name: "Lab Tin Học",
         building: "B",
         floor: 1,
-        capacity: 20,
+        capacity: 16,
         type: "lab",
     },
 ];
 
-// ---- Computers (75 total: 30 + 25 + 20) ----
+// ---- Computers (24 + 20 + 16 = 60 total) ----
 
 function generateComputers(
     locationId: string,
@@ -89,9 +89,9 @@ function generateComputers(
 }
 
 export const computers: ComputerDto[] = [
-    ...generateComputers("loc-1", "PM1", 30, 0),
-    ...generateComputers("loc-2", "PM2", 25, 30),
-    ...generateComputers("loc-3", "Lab", 20, 55),
+    ...generateComputers("loc-1", "PM1", 24, 0),
+    ...generateComputers("loc-2", "PM2", 20, 24),
+    ...generateComputers("loc-3", "Lab", 16, 44),
 ];
 
 // ---- Per-computer mock data generators ----

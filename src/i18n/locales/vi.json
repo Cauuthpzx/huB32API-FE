@@ -46,6 +46,21 @@
     "unpin": "Bỏ ghim",
     "theme": "Giao diện"
   },
+  "theme": {
+    "dark": "Tối",
+    "sunrise": "Nắng",
+    "ocean": "Biển",
+    "light": "Sáng",
+    "teal": "Ngọc",
+    "coral": "San hô"
+  },
+  "tooltip": {
+    "pin": "Ghim sidebar",
+    "unpin": "Bỏ ghim sidebar",
+    "settings": "Cài đặt",
+    "logout": "Đăng xuất",
+    "search": "Tìm kiếm (Ctrl+K)"
+  },
   "header": {
     "role": {
       "admin": "Quản trị viên",
@@ -89,6 +104,7 @@
   },
   "feature": {
     "toolbar": "Công cụ điều khiển",
+    "selectToControl": "Chọn máy để điều khiển",
     "lock": {
       "title": "Khóa màn hình",
       "lock": "Khóa",
