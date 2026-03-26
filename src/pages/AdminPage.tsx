@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -5,9 +6,17 @@ import { SchoolManager } from "@/components/admin/SchoolManager";
 import { LocationManager } from "@/components/admin/LocationManager";
 import { TeacherManager } from "@/components/admin/TeacherManager";
 import { AuditLog } from "@/components/admin/AuditLog";
+import { useRoomStore } from "@/stores/room.store";
 
 export function AdminPage() {
     const { t } = useTranslation();
+    const autoPin = useRoomStore((s) => s.autoPin);
+    const restorePin = useRoomStore((s) => s.restorePin);
+
+    useEffect(() => {
+        autoPin();
+        return () => restorePin();
+    }, [autoPin, restorePin]);
 
     return (
         <AppLayout>

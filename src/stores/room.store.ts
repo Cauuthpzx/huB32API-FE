@@ -32,6 +32,7 @@ interface RoomState {
     error: string | null;
     selectedDetailId: string | null;
     sidebarPinned: boolean;
+    previousPinState: boolean | null;
 
     fetchLocations: (schoolId: string) => Promise<void>;
     selectLocation: (id: string) => Promise<void>;
@@ -41,6 +42,8 @@ interface RoomState {
     openDetail: (id: string) => void;
     closeDetail: () => void;
     togglePin: () => void;
+    autoPin: () => void;
+    restorePin: () => void;
 }
 
 export const useRoomStore = create<RoomState>((set, get) => ({
@@ -54,6 +57,7 @@ export const useRoomStore = create<RoomState>((set, get) => ({
     error: null,
     selectedDetailId: null,
     sidebarPinned: localStorage.getItem(SIDEBAR_PIN_KEY) === "true",
+    previousPinState: null,
 
     fetchLocations: async (schoolId: string) => {
         // Only show loading if no cached data
@@ -140,6 +144,22 @@ export const useRoomStore = create<RoomState>((set, get) => ({
             const next = !state.sidebarPinned;
             localStorage.setItem(SIDEBAR_PIN_KEY, String(next));
             return { sidebarPinned: next };
+        });
+    },
+
+    autoPin: () => {
+        set((state) => ({
+            previousPinState: state.sidebarPinned,
+            sidebarPinned: true,
+        }));
+        localStorage.setItem(SIDEBAR_PIN_KEY, "true");
+    },
+
+    restorePin: () => {
+        set((state) => {
+            const restored = state.previousPinState ?? false;
+            localStorage.setItem(SIDEBAR_PIN_KEY, String(restored));
+            return { sidebarPinned: restored, previousPinState: null };
         });
     },
 }));
