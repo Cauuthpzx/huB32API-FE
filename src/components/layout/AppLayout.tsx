@@ -26,7 +26,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     {children}
                 </main>
 
-                <div className="h-[52px] shrink-0 border-t border-[var(--border-default)] bg-[var(--bg-secondary)]" />
+                <div className="h-12 shrink-0 border-t border-[#27272A] bg-[var(--bg-secondary)]" />
             </div>
         </div>
     );

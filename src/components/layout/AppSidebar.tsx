@@ -188,9 +188,9 @@ export function AppSidebar() {
                         </button>
                     </div>
 
-                    {/* Row 2: Quick actions */}
+                    {/* Row 2: Quick actions — h-12 matches toolbar height */}
                     <div
-                        className="grid border-t border-[#27272A]"
+                        className="grid h-12 border-t border-[#27272A]"
                         style={{ gridTemplateColumns: user?.role === "admin" ? "1fr 1fr 1fr" : "1fr 1fr" }}
                     >
                         <button
@@ -199,7 +199,7 @@ export function AppSidebar() {
                                 const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
                                 i18n.changeLanguage(next);
                             }}
-                            className="flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-[#27272A]"
+                            className="flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-[#27272A]"
                         >
                             <Languages size={16} />
                             <span className="text-[10px]">
@@ -209,7 +209,7 @@ export function AppSidebar() {
 
                         <button
                             className={cn(
-                                "flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors",
+                                "flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors",
                                 user?.role === "admin" && "border-r border-[#27272A]",
                             )}
                         >
@@ -220,7 +220,7 @@ export function AppSidebar() {
                         {user?.role === "admin" && (
                             <button
                                 onClick={() => { setHoverOpen(false); navigate("/admin"); }}
-                                className="flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors"
+                                className="flex flex-col items-center justify-center gap-0.5 text-zinc-500 hover:text-zinc-300 transition-colors"
                             >
                                 <Shield size={16} />
                                 <span className="text-[10px]">{t("sidebar.admin")}</span>
