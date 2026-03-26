@@ -215,10 +215,12 @@ export const teachers: MockTeacher[] = [
 // ---- Fake JWT ----
 
 export function generateFakeToken(teacherId: string): string {
+    const teacher = teachers.find((t) => t.id === teacherId);
     const header = btoa(JSON.stringify({ alg: "RS256", typ: "JWT" }));
     const payload = btoa(
         JSON.stringify({
             sub: teacherId,
+            role: teacher?.role ?? "teacher",
             iat: Math.floor(Date.now() / 1000),
             exp: Math.floor(Date.now() / 1000) + 3600,
             jti: uid(),
