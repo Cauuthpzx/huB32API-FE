@@ -7,6 +7,7 @@ import { useRoomStore } from "@/stores/room.store";
 import { useThemeStore } from "@/stores/theme.store";
 import { THEMES, THEME_NAMES, type ThemeName } from "@/lib/themes";
 import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
     ChevronRight,
     Languages,
@@ -259,7 +260,7 @@ export function AppSidebar() {
     );
 }
 
-function ThemePickerContent() {
+function ThemePickerContent({ onSelect }: { onSelect?: () => void }) {
     const { t } = useTranslation();
     const currentTheme = useThemeStore((s) => s.currentTheme);
     const setTheme = useThemeStore((s) => s.setTheme);
@@ -273,7 +274,7 @@ function ThemePickerContent() {
                     <button
                         type="button"
                         key={name}
-                        onClick={() => setTheme(name as ThemeName)}
+                        onClick={() => { setTheme(name as ThemeName); onSelect?.(); }}
                         className={cn(
                             "flex flex-col items-center gap-1 rounded-lg p-2 text-[10px] transition-all",
                             isActive
@@ -299,24 +300,25 @@ function ThemePickerContent() {
 
 function ThemePicker({ isAdmin }: { isAdmin?: boolean }) {
     const { t } = useTranslation();
+    const [open, setOpen] = useState(false);
 
     return (
-        <SmartTooltip
-            content={<ThemePickerContent />}
-            position="top"
-            delay={200}
-            interactive
-        >
-            <button
-                type="button"
-                className={cn(
-                    "flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors",
-                    isAdmin && "border-r border-[var(--border-default)]",
-                )}
-            >
-                <Palette size={16} />
-                <span className="text-[10px]">{t("sidebar.theme")}</span>
-            </button>
-        </SmartTooltip>
+        <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <button
+                    type="button"
+                    className={cn(
+                        "flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors",
+                        isAdmin && "border-r border-[var(--border-default)]",
+                    )}
+                >
+                    <Palette size={16} />
+                    <span className="text-[10px]">{t("sidebar.theme")}</span>
+                </button>
+            </PopoverTrigger>
+            <PopoverContent side="top" align="center" className="w-auto p-2">
+                <ThemePickerContent onSelect={() => setOpen(false)} />
+            </PopoverContent>
+        </Popover>
     );
 }
