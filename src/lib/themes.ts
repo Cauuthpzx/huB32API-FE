@@ -1,4 +1,4 @@
-export type ThemeName = "dark" | "sunrise" | "ocean" | "light" | "teal" | "coral";
+export type ThemeName = "dark" | "sunrise" | "ocean" | "light" | "teal" | "coral" | "midnight" | "forest" | "rose";
 
 interface ThemeColors {
     "--bg-primary": string;
@@ -128,9 +128,63 @@ export const THEMES: Record<ThemeName, ThemeColors> = {
         "--accent-blue-hover": "#D05555",
         "--accent-subtle": "rgba(224, 104, 104, 0.12)",
     },
+    midnight: {
+        "--bg-primary": "#0A0E1A",
+        "--bg-secondary": "#111827",
+        "--bg-tertiary": "#1E293B",
+        "--bg-hover": "#283548",
+        "--bg-elevated": "#152032",
+        "--bg-active": "#334155",
+        "--text-primary": "#F1F5F9",
+        "--text-secondary": "#94A3B8",
+        "--text-tertiary": "#64748B",
+        "--text-disabled": "#475569",
+        "--border-default": "#1E293B",
+        "--border-subtle": "#172033",
+        "--border-strong": "#334155",
+        "--accent-blue": "#818CF8",
+        "--accent-blue-hover": "#6366F1",
+        "--accent-subtle": "rgba(129, 140, 248, 0.15)",
+    },
+    forest: {
+        "--bg-primary": "#FAFFFE",
+        "--bg-secondary": "#F2FAF8",
+        "--bg-tertiary": "#E6F4F0",
+        "--bg-hover": "#D8EDE8",
+        "--bg-elevated": "#FFFFFF",
+        "--bg-active": "#CCE8E0",
+        "--text-primary": "#1A2E28",
+        "--text-secondary": "#5A7A70",
+        "--text-tertiary": "#8AA8A0",
+        "--text-disabled": "#B0C8C0",
+        "--border-default": "#D8EDE8",
+        "--border-subtle": "#E6F4F0",
+        "--border-strong": "#C0DED6",
+        "--accent-blue": "#16BAAA",
+        "--accent-blue-hover": "#129E90",
+        "--accent-subtle": "rgba(22, 186, 170, 0.12)",
+    },
+    rose: {
+        "--bg-primary": "#0E0C0B",
+        "--bg-secondary": "#171412",
+        "--bg-tertiary": "#221E1B",
+        "--bg-hover": "#2D2824",
+        "--bg-elevated": "#1C1816",
+        "--bg-active": "#38322E",
+        "--text-primary": "#F5F0ED",
+        "--text-secondary": "#B0A298",
+        "--text-tertiary": "#847668",
+        "--text-disabled": "#5C5048",
+        "--border-default": "#282220",
+        "--border-subtle": "#201C1A",
+        "--border-strong": "#383230",
+        "--accent-blue": "#F56040",
+        "--accent-blue-hover": "#E04830",
+        "--accent-subtle": "rgba(245, 96, 64, 0.12)",
+    },
 };
 
-export const THEME_NAMES: ThemeName[] = ["dark", "sunrise", "ocean", "light", "teal", "coral"];
+export const THEME_NAMES: ThemeName[] = ["dark", "midnight", "forest", "teal", "rose", "coral", "sunrise", "ocean", "light"];
 
 export function applyTheme(theme: ThemeName): void {
     const colors = THEMES[theme];

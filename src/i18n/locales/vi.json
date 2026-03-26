@@ -53,7 +53,10 @@
     "ocean": "Biển",
     "light": "Sáng",
     "teal": "Ngọc",
-    "coral": "San hô"
+    "coral": "San hô",
+    "midnight": "Đêm",
+    "forest": "Layui",
+    "rose": "Lucide"
   },
   "tooltip": {
     "pin": "Ghim sidebar",

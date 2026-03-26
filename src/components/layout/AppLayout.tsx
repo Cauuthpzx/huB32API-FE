@@ -18,7 +18,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
             {/* Content wrapper — pushes right when sidebar pinned */}
             <div
-                className="flex flex-1 flex-col overflow-hidden transition-[margin-left] duration-200 ease-out"
+                className="flex flex-1 flex-col overflow-hidden transition-[margin-left] duration-200 ease-out will-change-[margin-left]"
                 style={{ marginLeft: sidebarPinned ? 220 : 0 }}
             >
                 <Header />

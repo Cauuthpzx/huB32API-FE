@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,6 @@ import type { LocationResponse } from "@/api/types";
 import { useThemeStore } from "@/stores/theme.store";
 import { THEMES, THEME_NAMES, type ThemeName } from "@/lib/themes";
 import { Badge } from "@/components/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
     ChevronRight,
     Languages,
@@ -19,12 +18,15 @@ import {
     PanelLeftClose,
     Settings,
     Shield,
+    X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SmartTooltip } from "@/components/shared/SmartTooltip";
 
 const LANG_CYCLE = ["vi", "en", "zh"] as const;
 const LANG_LABELS: Record<string, string> = { vi: "Tiếng Việt", en: "English", zh: "中文" };
+
+const HOVER_CLOSE_DELAY = 200;
 
 export function AppSidebar() {
     const { t, i18n } = useTranslation();
@@ -41,12 +43,34 @@ export function AppSidebar() {
     const togglePin = useRoomStore((s) => s.togglePin);
 
     const [hoverOpen, setHoverOpen] = useState(false);
+    const [themePickerOpen, setThemePickerOpen] = useState(false);
+    const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const isVisible = sidebarPinned || hoverOpen;
+
+    // Debounced close to prevent flicker
+    const scheduleClose = useCallback(() => {
+        closeTimerRef.current = setTimeout(() => {
+            setHoverOpen(false);
+        }, HOVER_CLOSE_DELAY);
+    }, []);
+
+    const cancelClose = useCallback(() => {
+        if (closeTimerRef.current) {
+            clearTimeout(closeTimerRef.current);
+            closeTimerRef.current = null;
+        }
+    }, []);
+
+    // Cleanup timer on unmount
+    useEffect(() => {
+        return () => {
+            if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+        };
+    }, []);
 
     const handleSelectRoom = useCallback(
         async (id: string) => {
             await selectLocation(id);
-            // If on admin page, navigate back to dashboard
             if (location.pathname === "/admin") {
                 navigate("/dashboard");
             }
@@ -62,7 +86,6 @@ export function AppSidebar() {
             const online = computers.filter((c) => c.state !== "offline").length;
             return `${online}/${computers.length}`;
         }
-        // Show capacity for non-selected rooms
         return String(loc.capacity);
     };
 
@@ -72,7 +95,10 @@ export function AppSidebar() {
             {!isVisible && (
                 <div
                     className="fixed left-0 top-0 z-[var(--z-overlay)] h-full w-10"
-                    onMouseEnter={() => setHoverOpen(true)}
+                    onMouseEnter={() => {
+                        cancelClose();
+                        setHoverOpen(true);
+                    }}
                 />
             )}
 
@@ -118,11 +144,12 @@ export function AppSidebar() {
                     sidebarPinned ? "z-[var(--z-sticky)]" : "z-[var(--z-overlay)]",
                     "bg-[var(--bg-secondary)] border-r border-[var(--border-default)]",
                     "flex flex-col",
-                    "transition-transform duration-200 ease-out",
+                    "transition-transform duration-200 ease-out will-change-transform",
                     isVisible ? "translate-x-0" : "-translate-x-[220px]",
                 )}
+                onMouseEnter={cancelClose}
                 onMouseLeave={() => {
-                    if (!sidebarPinned) setHoverOpen(false);
+                    if (!sidebarPinned) scheduleClose();
                 }}
             >
                 {/* ---- TOP: Logo + Pin (48px, aligns with header) ---- */}
@@ -186,6 +213,11 @@ export function AppSidebar() {
                         )}
                 </div>
 
+                {/* ---- Theme Picker Panel (expandable) ---- */}
+                {themePickerOpen && (
+                    <ThemePickerPanel onClose={() => setThemePickerOpen(false)} />
+                )}
+
                 {/* ---- BOTTOM: Account + 3 action columns ---- */}
                 <div className="shrink-0">
                     {/* Row 1: Account */}
@@ -246,7 +278,23 @@ export function AppSidebar() {
                             </button>
                         </SmartTooltip>
 
-                        <ThemePicker isAdmin={user?.role === "admin"} />
+                        <SmartTooltip content={t("sidebar.theme")} position="top">
+                            <button
+                                type="button"
+                                aria-label={t("sidebar.theme")}
+                                onClick={() => setThemePickerOpen((o) => !o)}
+                                className={cn(
+                                    "flex flex-col items-center justify-center gap-0.5 transition-colors",
+                                    themePickerOpen
+                                        ? "text-[var(--accent-blue)] bg-[var(--accent-subtle)]"
+                                        : "text-[var(--text-tertiary)] hover:text-[var(--text-primary)]",
+                                    user?.role === "admin" && "border-r border-[var(--border-default)]",
+                                )}
+                            >
+                                <Palette size={16} />
+                                <span className="text-[10px]">{t("sidebar.theme")}</span>
+                            </button>
+                        </SmartTooltip>
 
                         {user?.role === "admin" && (
                             <SmartTooltip content={t("sidebar.admin")} position="top">
@@ -268,65 +316,62 @@ export function AppSidebar() {
     );
 }
 
-function ThemePickerContent({ onSelect }: { onSelect?: () => void }) {
+/* ---- Theme Picker Panel (inline within sidebar) ---- */
+
+function ThemePickerPanel({ onClose }: { onClose: () => void }) {
     const { t } = useTranslation();
     const currentTheme = useThemeStore((s) => s.currentTheme);
     const setTheme = useThemeStore((s) => s.setTheme);
 
     return (
-        <div className="grid grid-cols-3 gap-1.5" style={{ padding: 4 }}>
-            {THEME_NAMES.map((name) => {
-                const colors = THEMES[name];
-                const isActive = currentTheme === name;
-                return (
-                    <button
-                        type="button"
-                        key={name}
-                        onClick={() => { setTheme(name as ThemeName); onSelect?.(); }}
-                        className={cn(
-                            "flex flex-col items-center gap-1 rounded-lg p-2 text-[10px] transition-all",
-                            isActive
-                                ? "ring-2 ring-[var(--accent-blue)] shadow-[0_0_8px_rgba(59,130,246,0.3)]"
-                                : "hover:bg-[var(--bg-hover)] hover:scale-105",
-                        )}
-                    >
-                        <div
-                            className="size-8 rounded-md shadow-md"
-                            style={{
-                                background: `linear-gradient(135deg, ${colors["--bg-primary"]} 40%, ${colors["--accent-blue"]} 100%)`,
-                                border: `2px solid ${colors["--accent-blue"]}`,
-                                boxShadow: `0 2px 8px ${colors["--accent-blue"]}40`,
-                            }}
-                        />
-                        <span className="whitespace-nowrap font-medium">{t(`theme.${name}`)}</span>
-                    </button>
-                );
-            })}
-        </div>
-    );
-}
-
-function ThemePicker({ isAdmin }: { isAdmin?: boolean }) {
-    const { t } = useTranslation();
-    const [open, setOpen] = useState(false);
-
-    return (
-        <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
+        <div className="shrink-0 border-t border-[var(--border-default)] bg-[var(--bg-primary)] px-2 py-2 animate-slide-up">
+            {/* Header */}
+            <div className="mb-1.5 flex items-center justify-between px-0.5">
+                <span className="text-[10px] font-medium uppercase text-[var(--text-tertiary)]">
+                    {t("sidebar.theme")}
+                </span>
                 <button
                     type="button"
-                    className={cn(
-                        "flex flex-col items-center justify-center gap-0.5 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors",
-                        isAdmin && "border-r border-[var(--border-default)]",
-                    )}
+                    onClick={onClose}
+                    className="flex size-4 items-center justify-center rounded text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
                 >
-                    <Palette size={16} />
-                    <span className="text-[10px]">{t("sidebar.theme")}</span>
+                    <X size={10} />
                 </button>
-            </PopoverTrigger>
-            <PopoverContent side="top" align="center" className="w-auto p-2">
-                <ThemePickerContent onSelect={() => setOpen(false)} />
-            </PopoverContent>
-        </Popover>
+            </div>
+
+            {/* 3x3 Grid of compact square swatches */}
+            <div className="grid grid-cols-3 gap-1">
+                {THEME_NAMES.map((name) => {
+                    const colors = THEMES[name];
+                    const isActive = currentTheme === name;
+                    return (
+                        <button
+                            type="button"
+                            key={name}
+                            onClick={() => {
+                                setTheme(name as ThemeName);
+                            }}
+                            className={cn(
+                                "flex flex-col items-center gap-0.5 rounded p-1 transition-all",
+                                isActive
+                                    ? "ring-1.5 ring-[var(--accent-blue)] bg-[var(--accent-subtle)]"
+                                    : "hover:bg-[var(--bg-hover)]",
+                            )}
+                        >
+                            <div
+                                className="aspect-square w-full rounded shadow-sm"
+                                style={{
+                                    background: `linear-gradient(135deg, ${colors["--bg-primary"]} 40%, ${colors["--accent-blue"]} 100%)`,
+                                    border: `1.5px solid ${isActive ? colors["--accent-blue"] : colors["--border-strong"]}`,
+                                }}
+                            />
+                            <span className="text-[8px] font-medium text-[var(--text-secondary)] leading-none">
+                                {t(`theme.${name}`)}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
+        </div>
     );
 }

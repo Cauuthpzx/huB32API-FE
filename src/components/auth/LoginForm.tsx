@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { authApi } from "@/api/auth.api";
 import { useAuthStore } from "@/stores/auth.store";
 import { Spinner } from "@/components/shared/Spinner";
+import { Lock, User } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function LoginForm() {
     const { t } = useTranslation();
@@ -42,52 +41,86 @@ export function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-                <Label htmlFor="username">{t("auth.username")}</Label>
-                <Input
-                    id="username"
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder={t("auth.username")}
-                    autoComplete="username"
-                    autoFocus
-                    required
-                />
+            <div className="space-y-1.5">
+                <label htmlFor="username" className="text-xs font-medium text-[var(--text-tertiary)]">
+                    {t("auth.username")}
+                </label>
+                <div className="relative">
+                    <User
+                        size={15}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-disabled)]"
+                    />
+                    <input
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder={t("auth.username")}
+                        autoComplete="username"
+                        autoFocus
+                        required
+                        className={cn(
+                            "h-10 w-full rounded-lg border bg-[var(--bg-primary)] pl-9 pr-3 text-sm text-[var(--text-primary)]",
+                            "placeholder:text-[var(--text-disabled)]",
+                            "border-[var(--border-default)] focus:border-[var(--accent-blue)] focus:ring-1 focus:ring-[var(--accent-blue)]",
+                            "outline-none transition-all",
+                        )}
+                    />
+                </div>
             </div>
 
-            <div className="space-y-2">
-                <Label htmlFor="password">{t("auth.password")}</Label>
-                <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder={t("auth.password")}
-                    autoComplete="current-password"
-                    required
-                />
+            <div className="space-y-1.5">
+                <label htmlFor="password" className="text-xs font-medium text-[var(--text-tertiary)]">
+                    {t("auth.password")}
+                </label>
+                <div className="relative">
+                    <Lock
+                        size={15}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-disabled)]"
+                    />
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder={t("auth.password")}
+                        autoComplete="current-password"
+                        required
+                        className={cn(
+                            "h-10 w-full rounded-lg border bg-[var(--bg-primary)] pl-9 pr-3 text-sm text-[var(--text-primary)]",
+                            "placeholder:text-[var(--text-disabled)]",
+                            "border-[var(--border-default)] focus:border-[var(--accent-blue)] focus:ring-1 focus:ring-[var(--accent-blue)]",
+                            "outline-none transition-all",
+                        )}
+                    />
+                </div>
             </div>
 
             {error && (
-                <p className="text-sm text-destructive">{error}</p>
+                <div className="rounded-md bg-[var(--danger-subtle)] px-3 py-2 text-xs text-[var(--danger)]">
+                    {error}
+                </div>
             )}
 
-            <Button
+            <button
                 type="submit"
-                className="w-full"
-                size="lg"
                 disabled={mutation.isPending}
+                className={cn(
+                    "flex h-10 w-full items-center justify-center gap-2 rounded-lg text-sm font-semibold text-white transition-all",
+                    "bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)]",
+                    "focus:outline-none focus:ring-2 focus:ring-[var(--accent-blue)] focus:ring-offset-2 focus:ring-offset-[var(--bg-secondary)]",
+                    mutation.isPending && "opacity-70 pointer-events-none",
+                )}
             >
                 {mutation.isPending ? (
                     <>
-                        <Spinner size={20} />
+                        <Spinner size={16} />
                         {t("auth.loggingIn")}
                     </>
                 ) : (
                     t("auth.loginButton")
                 )}
-            </Button>
+            </button>
         </form>
     );
 }

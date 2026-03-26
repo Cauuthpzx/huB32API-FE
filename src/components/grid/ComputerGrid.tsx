@@ -14,7 +14,7 @@ export function ComputerGrid() {
 
     if (isLoadingComputers) {
         return (
-            <div className="h-full overflow-y-auto">
+            <div className="h-full overflow-y-auto scrollbar-hidden">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1.5 p-2">
                     {Array.from({ length: 12 }).map((_, i) => (
                         <div
@@ -49,7 +49,7 @@ export function ComputerGrid() {
 
     return (
         <>
-            <div className="h-full overflow-y-auto">
+            <div className="h-full overflow-y-auto scrollbar-hidden">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1.5 p-2">
                     {computers.map((pc) => (
                         <ComputerCard

@@ -53,7 +53,10 @@
     "ocean": "Ocean",
     "light": "Light",
     "teal": "Teal",
-    "coral": "Coral"
+    "coral": "Coral",
+    "midnight": "Midnight",
+    "forest": "Layui",
+    "rose": "Lucide"
   },
   "tooltip": {
     "pin": "Pin sidebar",

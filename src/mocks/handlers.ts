@@ -138,11 +138,15 @@ export const handlers = [
         if (!requireAuth(request)) return unauthorized();
         const pc = computers.find((c) => c.id === params.id);
         if (!pc) return HttpResponse.json({ status: 404, title: "Not found" }, { status: 404 });
+        const isOnline = pc.state !== "offline";
+        const latency = isOnline ? Math.floor(Math.random() * 20) + 1 : 0;
         return HttpResponse.json({
             id: pc.id,
             hostname: pc.hostname,
-            online: pc.state !== "offline",
-            latencyMs: pc.state !== "offline" ? Math.floor(Math.random() * 20) + 1 : 0,
+            state: pc.state,
+            reachable: isOnline,
+            latencyMs: latency,
+            pingLatencyMs: latency,
         });
     }),
 
@@ -251,21 +255,24 @@ export const handlers = [
     // LOCATIONS
     // ================================================================
 
-    http.get(`${API}/api/v1/schools/:schoolId/locations`, async ({ params, request }) => {
+    http.get(`${API}/api/v1/locations`, async ({ request }) => {
         await delay(100);
         if (!requireAuth(request)) return unauthorized();
-        return HttpResponse.json(
-            locations.filter((l) => l.schoolId === params.schoolId),
-        );
+        const url = new URL(request.url);
+        const schoolId = url.searchParams.get("school_id");
+        const filtered = schoolId
+            ? locations.filter((l) => l.schoolId === schoolId)
+            : locations;
+        return HttpResponse.json(filtered);
     }),
 
-    http.post(`${API}/api/v1/schools/:schoolId/locations`, async ({ params, request }) => {
+    http.post(`${API}/api/v1/locations`, async ({ request }) => {
         await delay(200);
         if (!requireAuth(request)) return unauthorized();
-        const body = (await request.json()) as CreateLocationRequest;
+        const body = (await request.json()) as CreateLocationRequest & { schoolId: string };
         const loc = {
             id: `loc-${locations.length + 1}`,
-            schoolId: params.schoolId as string,
+            schoolId: body.schoolId,
             name: body.name,
             building: body.building,
             floor: body.floor,

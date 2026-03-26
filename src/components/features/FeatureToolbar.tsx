@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"; // toolbar v2
 import { useTranslation } from "react-i18next";
 import {
     CheckSquare,
@@ -38,11 +38,18 @@ interface ToolbarBtnProps {
 }
 
 function ToolbarBtn({ icon, label, onClick, disabled, variant = "default" }: ToolbarBtnProps) {
-    const styles = {
-        default: "border border-[var(--border-default)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]",
-        accent: "border border-[var(--accent-blue)] bg-[var(--accent-blue)] text-white hover:opacity-90",
-        success: "border border-emerald-600/50 text-emerald-400 hover:bg-emerald-600/20",
-        danger: "border border-red-600/50 text-red-400 hover:bg-red-600/20",
+    const base = {
+        default: "border border-[var(--border-default)] text-[var(--text-secondary)]",
+        accent: "border border-[var(--accent-blue)] text-[var(--accent-blue)]",
+        success: "border border-emerald-600/50 text-emerald-400",
+        danger: "border border-red-600/50 text-red-400",
+    };
+
+    const hover = {
+        default: "hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]",
+        accent: "hover:bg-[var(--accent-subtle)] hover:text-[var(--accent-blue-hover)]",
+        success: "hover:bg-emerald-600/20",
+        danger: "hover:bg-red-600/20",
     };
 
     return (
@@ -50,11 +57,13 @@ function ToolbarBtn({ icon, label, onClick, disabled, variant = "default" }: Too
             <button
                 type="button"
                 disabled={disabled}
-                onClick={(e) => animateClick(e, onClick)}
+                onClick={(e) => !disabled && animateClick(e, onClick)}
                 className={cn(
-                    "flex size-10 shrink-0 items-center justify-center rounded-md p-0 transition-colors active:scale-95",
-                    styles[variant],
-                    disabled && "opacity-40 cursor-not-allowed",
+                    "flex size-10 shrink-0 items-center justify-center rounded-md p-0 transition-colors",
+                    base[variant],
+                    disabled
+                        ? "opacity-40 cursor-not-allowed"
+                        : cn(hover[variant], "active:scale-95"),
                 )}
             >
                 {icon}
