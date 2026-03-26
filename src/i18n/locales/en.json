@@ -41,7 +41,9 @@
     "online": "{{count}} online",
     "offline": "{{count}} offline",
     "noRooms": "No rooms assigned",
-    "admin": "Administration"
+    "admin": "Administration",
+    "pin": "Pin sidebar",
+    "unpin": "Unpin sidebar"
   },
   "header": {
     "role": {

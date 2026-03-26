@@ -13,7 +13,7 @@ export function Header() {
     const online = computers.filter((c) => c.state !== "offline").length;
 
     return (
-        <header className="flex h-12 shrink-0 items-center border-b-2 border-[var(--border-default)] bg-[#111113] px-4">
+        <header className="flex h-12 shrink-0 items-center border-b border-[#1C1C1F] bg-[#111113] px-4">
             <h2 className="text-sm font-semibold text-[var(--text-primary)]">
                 {selectedLocation?.name ?? t("sidebar.allRooms")}
             </h2>

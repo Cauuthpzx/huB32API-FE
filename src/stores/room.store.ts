@@ -2,6 +2,8 @@ import { create } from "zustand";
 import type { ComputerDto, LocationResponse } from "@/api/types";
 import { locationsApi } from "@/api/locations.api";
 
+const SIDEBAR_PIN_KEY = "hub32_sidebar_pinned";
+
 interface RoomState {
     locations: LocationResponse[];
     selectedLocationId: string | null;
@@ -9,12 +11,14 @@ interface RoomState {
     selectedComputerIds: Set<string>;
     isLoadingLocations: boolean;
     isLoadingComputers: boolean;
+    sidebarPinned: boolean;
 
     fetchLocations: (schoolId: string) => Promise<void>;
     selectLocation: (id: string) => Promise<void>;
     toggleComputer: (id: string) => void;
     selectAll: () => void;
     deselectAll: () => void;
+    togglePin: () => void;
 }
 
 export const useRoomStore = create<RoomState>((set, get) => ({
@@ -24,13 +28,13 @@ export const useRoomStore = create<RoomState>((set, get) => ({
     selectedComputerIds: new Set<string>(),
     isLoadingLocations: false,
     isLoadingComputers: false,
+    sidebarPinned: localStorage.getItem(SIDEBAR_PIN_KEY) === "true",
 
     fetchLocations: async (schoolId: string) => {
         set({ isLoadingLocations: true });
         try {
             const locs = await locationsApi.getBySchool(schoolId);
             set({ locations: locs, isLoadingLocations: false });
-            // Auto-select first location if none selected
             if (locs.length > 0 && !get().selectedLocationId) {
                 await get().selectLocation(locs[0].id);
             }
@@ -74,5 +78,13 @@ export const useRoomStore = create<RoomState>((set, get) => ({
 
     deselectAll: () => {
         set({ selectedComputerIds: new Set() });
+    },
+
+    togglePin: () => {
+        set((state) => {
+            const next = !state.sidebarPinned;
+            localStorage.setItem(SIDEBAR_PIN_KEY, String(next));
+            return { sidebarPinned: next };
+        });
     },
 }));
