@@ -176,7 +176,7 @@ export function AppSidebar() {
                         </div>
                         <button
                             onClick={() => setHoverOpen(false)}
-                            className="flex size-7 items-center justify-center rounded-md border border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+                            className="flex size-7 items-center justify-center rounded-md border border-[#27272A] text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
                         >
                             <Settings size={14} />
                         </button>
