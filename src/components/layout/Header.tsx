@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useRoomStore } from "@/stores/room.store";
+import { HeartbeatLine } from "@/components/shared/HeartbeatLine";
 import { Monitor, Search } from "lucide-react";
 
 export function Header() {
@@ -33,7 +34,8 @@ export function Header() {
                                     {total}
                                 </span>
                                 <span className="mx-2 text-[#3F3F46]">|</span>
-                                <span className="text-[13px] text-[#22C55E]">
+                                <HeartbeatLine state="online" width={28} height={10} />
+                                <span className="ml-1.5 text-[13px] text-[#22C55E]">
                                     <span className="font-medium">{online}</span>
                                     {" online"}
                                 </span>
