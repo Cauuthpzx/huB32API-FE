@@ -1,25 +1,35 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useAuthStore } from "@/stores/auth.store";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { AppLayout } from "@/components/layout/AppLayout";
+import { useRoomStore } from "@/stores/room.store";
 
 export function DashboardPage() {
     const { t } = useTranslation();
-    const user = useAuthStore((s) => s.user);
-    const logout = useAuthStore((s) => s.logout);
+    const fetchLocations = useRoomStore((s) => s.fetchLocations);
+    const isLoadingComputers = useRoomStore((s) => s.isLoadingComputers);
+    const computers = useRoomStore((s) => s.computers);
+
+    useEffect(() => {
+        fetchLocations("school-1");
+    }, [fetchLocations]);
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[var(--bg-primary)]">
-            <h1 className="text-2xl font-semibold text-foreground">
-                {t("app.name")} — {t("app.title")}
-            </h1>
-            <p className="text-muted-foreground">
-                {t("header.role." + (user?.role ?? "teacher"))} — {user?.sub}
-            </p>
-            <Button variant="outline" onClick={logout}>
-                <LogOut />
-                {t("auth.logout")}
-            </Button>
-        </div>
+        <AppLayout>
+            <div className="flex h-full items-center justify-center">
+                {isLoadingComputers ? (
+                    <p className="text-sm text-[var(--text-tertiary)]">
+                        {t("app.loading")}
+                    </p>
+                ) : computers.length === 0 ? (
+                    <p className="text-sm text-[var(--text-disabled)]">
+                        {t("grid.noComputers")}
+                    </p>
+                ) : (
+                    <p className="text-sm text-[var(--text-tertiary)]">
+                        {t("grid.computerCount_other", { count: computers.length })}
+                    </p>
+                )}
+            </div>
+        </AppLayout>
     );
 }
