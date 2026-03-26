@@ -16,17 +16,28 @@ const CONFIG: Record<string, { color: string; zigzag: boolean; duration: string 
     unknown:       { color: "#3F3F46", zigzag: false, duration: "0s"   },
 };
 
-export function HeartbeatLine({ state, width = 32, height = 12 }: HeartbeatLineProps) {
+export function HeartbeatLine({ state, width = 32, height = 14 }: HeartbeatLineProps) {
     const { color, zigzag, duration } = CONFIG[state] ?? CONFIG.unknown;
     const mid = height / 2;
+    const top = 1;
+    const bot = height - 1;
 
-    // Zigzag: flat → up → down → up → down → flat
+    // Sharp zigzag: flat — V — V — flat (peaks near edges for more amplitude)
     const zigzagPoints = zigzag
-        ? `0,${mid} ${width * 0.15},${mid} ${width * 0.25},${height * 0.15} ${width * 0.35},${height * 0.85} ${width * 0.45},${height * 0.15} ${width * 0.55},${height * 0.85} ${width * 0.65},${mid} ${width},${mid}`
+        ? [
+              `0,${mid}`,
+              `${width * 0.12},${mid}`,
+              `${width * 0.22},${top}`,
+              `${width * 0.32},${bot}`,
+              `${width * 0.42},${top}`,
+              `${width * 0.52},${bot}`,
+              `${width * 0.62},${top}`,
+              `${width * 0.72},${mid}`,
+              `${width},${mid}`,
+          ].join(" ")
         : `0,${mid} ${width},${mid}`;
 
-    // Total path length for dash animation
-    const pathLength = zigzag ? width * 2.2 : width;
+    const pathLength = zigzag ? width * 2.8 : width;
 
     return (
         <svg

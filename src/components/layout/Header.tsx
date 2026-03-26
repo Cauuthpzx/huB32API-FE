@@ -34,7 +34,7 @@ export function Header() {
                                     {total}
                                 </span>
                                 <span className="mx-2 text-[#3F3F46]">|</span>
-                                <HeartbeatLine state="online" width={28} height={10} />
+                                <HeartbeatLine state="online" width={32} height={14} />
                                 <span className="ml-1.5 text-[13px] text-[#22C55E]">
                                     <span className="font-medium">{online}</span>
                                     {" online"}
