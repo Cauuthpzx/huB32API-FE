@@ -25,15 +25,15 @@ export function HeartbeatLine({ state, width = 32, height = 12 }: HeartbeatLineP
         ? [
               `0,${mid}`,
               `${width * 0.15},${mid}`,
-              // Peak 1: biggest (±40% of mid)
-              `${width * 0.23},${mid - mid * 0.7}`,
-              `${width * 0.31},${mid + mid * 0.7}`,
-              // Peak 2: medium (±25% of mid)
-              `${width * 0.39},${mid - mid * 0.4}`,
-              `${width * 0.47},${mid + mid * 0.4}`,
-              // Peak 3: small (±12% of mid)
-              `${width * 0.54},${mid - mid * 0.15}`,
-              `${width * 0.60},${mid + mid * 0.15}`,
+              // Peak 1: biggest (±85%)
+              `${width * 0.23},${mid - mid * 0.85}`,
+              `${width * 0.31},${mid + mid * 0.85}`,
+              // Peak 2: medium (±50%)
+              `${width * 0.39},${mid - mid * 0.5}`,
+              `${width * 0.47},${mid + mid * 0.5}`,
+              // Peak 3: small (±20%)
+              `${width * 0.54},${mid - mid * 0.2}`,
+              `${width * 0.60},${mid + mid * 0.2}`,
               `${width * 0.68},${mid}`,
               `${width},${mid}`,
           ].join(" ")
