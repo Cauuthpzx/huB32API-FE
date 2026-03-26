@@ -43,7 +43,8 @@
     "noRooms": "Chưa được gán phòng máy nào",
     "admin": "Quản trị",
     "pin": "Ghim sidebar",
-    "unpin": "Bỏ ghim"
+    "unpin": "Bỏ ghim",
+    "theme": "Giao diện"
   },
   "header": {
     "role": {

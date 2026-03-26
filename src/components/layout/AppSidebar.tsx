@@ -162,7 +162,7 @@ export function AppSidebar() {
                 {/* ---- BOTTOM: Account + 3 action columns ---- */}
                 <div className="shrink-0">
                     {/* Row 1: Account */}
-                    <div className="flex items-center gap-2.5 border-t border-zinc-800 px-3 py-2.5">
+                    <div className="flex items-center gap-2.5 border-t border-[#27272A] px-3 py-2.5">
                         <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
                             {(user?.sub ?? "U").slice(0, 2).toUpperCase()}
                         </div>
@@ -190,7 +190,7 @@ export function AppSidebar() {
 
                     {/* Row 2: Quick actions */}
                     <div
-                        className="grid border-t border-zinc-800"
+                        className="grid border-t border-[#27272A]"
                         style={{ gridTemplateColumns: user?.role === "admin" ? "1fr 1fr 1fr" : "1fr 1fr" }}
                     >
                         <button
@@ -199,7 +199,7 @@ export function AppSidebar() {
                                 const next = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
                                 i18n.changeLanguage(next);
                             }}
-                            className="flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-zinc-800"
+                            className="flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors border-r border-[#27272A]"
                         >
                             <Languages size={16} />
                             <span className="text-[10px]">
@@ -210,11 +210,11 @@ export function AppSidebar() {
                         <button
                             className={cn(
                                 "flex flex-col items-center gap-1 py-2.5 text-zinc-500 hover:text-zinc-300 transition-colors",
-                                user?.role === "admin" && "border-r border-zinc-800",
+                                user?.role === "admin" && "border-r border-[#27272A]",
                             )}
                         >
                             <Moon size={16} />
-                            <span className="text-[10px]">{t("header.settings")}</span>
+                            <span className="text-[10px]">{t("sidebar.theme")}</span>
                         </button>
 
                         {user?.role === "admin" && (

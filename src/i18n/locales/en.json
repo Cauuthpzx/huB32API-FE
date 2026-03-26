@@ -43,7 +43,8 @@
     "noRooms": "No rooms assigned",
     "admin": "Administration",
     "pin": "Pin sidebar",
-    "unpin": "Unpin sidebar"
+    "unpin": "Unpin sidebar",
+    "theme": "Theme"
   },
   "header": {
     "role": {
