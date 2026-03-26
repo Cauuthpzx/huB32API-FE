@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useRoomStore } from "@/stores/room.store";
-import { Monitor } from "lucide-react";
+import { Monitor, Search } from "lucide-react";
 
 export function Header() {
     const { t } = useTranslation();
@@ -13,25 +13,46 @@ export function Header() {
     const online = computers.filter((c) => c.state !== "offline").length;
 
     return (
-        <header className="flex h-12 shrink-0 items-center border-b border-[#1C1C1F] bg-[#111113] px-4">
-            <h2 className="text-sm font-semibold text-[var(--text-primary)]">
-                {selectedLocation?.name ?? t("sidebar.allRooms")}
-            </h2>
+        <header className="flex h-12 shrink-0 items-center gap-4 border-b border-[#1C1C1F] bg-[#111113] px-4">
+            {/* Left: room stats (no shrink) */}
+            <div className="flex shrink-0 items-center">
+                <h2 className="text-sm font-semibold text-[var(--text-primary)]">
+                    {selectedLocation?.name ?? t("sidebar.allRooms")}
+                </h2>
 
-            {selectedLocation && (
-                <>
-                    <span className="mx-2 text-[#3F3F46]">|</span>
-                    <Monitor size={14} className="text-zinc-500" />
-                    <span className="ml-1.5 text-[13px] text-zinc-400">
-                        {total}
-                    </span>
-                    <span className="mx-2 text-[#3F3F46]">|</span>
-                    <span className="text-[13px] text-[#22C55E]">
-                        <span className="font-medium">{online}</span>
-                        {" online"}
-                    </span>
-                </>
-            )}
+                {selectedLocation && (
+                    <>
+                        <span className="mx-2 text-[#3F3F46]">|</span>
+                        <Monitor size={14} className="text-zinc-500" />
+                        <span className="ml-1.5 text-[13px] text-zinc-400">
+                            {total}
+                        </span>
+                        <span className="mx-2 text-[#3F3F46]">|</span>
+                        <span className="text-[13px] text-[#22C55E]">
+                            <span className="font-medium">{online}</span>
+                            {" online"}
+                        </span>
+                    </>
+                )}
+            </div>
+
+            {/* Center: search (flex:1, auto-centered) */}
+            <div className="flex flex-1 justify-center">
+                <div className="relative w-full max-w-[400px]">
+                    <Search
+                        size={14}
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-500"
+                    />
+                    <input
+                        type="text"
+                        placeholder={t("app.search")}
+                        className="h-8 w-full rounded-md border border-[#27272A] bg-[#18181B] pl-8 pr-3 text-xs text-[var(--text-primary)] placeholder:text-zinc-600 focus:border-[#3B82F6] focus:outline-none"
+                    />
+                </div>
+            </div>
+
+            {/* Right: spacer for symmetry */}
+            <div className="shrink-0" />
         </header>
     );
 }
