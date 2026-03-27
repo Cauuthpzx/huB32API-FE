@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { featuresApi } from "@/api/features.api";
+import { FeatureUids } from "@/api/types";
 
 interface MessageDialogProps {
     open: boolean;
@@ -32,7 +33,7 @@ export function MessageDialog({ open, onOpenChange, computerIds }: MessageDialog
         try {
             await featuresApi.batch({
                 computerIds,
-                featureUid: "message",
+                featureUid: FeatureUids.Message,
                 operation: "start",
                 arguments: { text: message.trim() },
             });
@@ -48,7 +49,7 @@ export function MessageDialog({ open, onOpenChange, computerIds }: MessageDialog
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
+            <DialogContent aria-describedby={undefined}>
                 <DialogHeader>
                     <DialogTitle>{t("feature.message.title")}</DialogTitle>
                 </DialogHeader>

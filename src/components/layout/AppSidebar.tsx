@@ -258,7 +258,7 @@ export function AppSidebar() {
                     {/* Row 2: Quick actions — h-12 matches toolbar height */}
                     <div
                         className="grid h-12 border-t border-[var(--border-default)]"
-                        style={{ gridTemplateColumns: user?.role === "admin" ? "1fr 1fr 1fr" : "1fr 1fr" }}
+                        style={{ gridTemplateColumns: (user?.role === "admin" || user?.role === "owner") ? "1fr 1fr 1fr" : "1fr 1fr" }}
                     >
                         <SmartTooltip content={t("header.language")} position="top">
                             <button
@@ -296,7 +296,7 @@ export function AppSidebar() {
                             </button>
                         </SmartTooltip>
 
-                        {user?.role === "admin" && (
+                        {(user?.role === "admin" || user?.role === "owner") && (
                             <SmartTooltip content={t("sidebar.admin")} position="top">
                                 <button
                                     type="button"

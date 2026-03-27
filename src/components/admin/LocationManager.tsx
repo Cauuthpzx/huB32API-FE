@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -24,7 +24,13 @@ export function LocationManager() {
     const qc = useQueryClient();
 
     const { data: schools = [] } = useQuery({ queryKey: ["schools"], queryFn: schoolsApi.getAll });
-    const [schoolFilter, setSchoolFilter] = useState("school-1");
+    const [schoolFilter, setSchoolFilter] = useState("");
+
+    useEffect(() => {
+        if (schools.length > 0 && !schoolFilter) {
+            setSchoolFilter(schools[0].id);
+        }
+    }, [schools, schoolFilter]);
 
     const { data: locations = [], isLoading } = useQuery({
         queryKey: ["locations", schoolFilter],
@@ -95,7 +101,7 @@ export function LocationManager() {
                         </Button>
                     </SmartTooltip>
                     <SmartTooltip content={t("app.delete")} position="top">
-                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-red-400 hover:text-red-300" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
+                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive hover:text-destructive/80" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
                             <Trash2 size={14} />
                         </Button>
                     </SmartTooltip>
@@ -113,7 +119,7 @@ export function LocationManager() {
                         <select
                             value={schoolFilter}
                             onChange={(e) => setSchoolFilter(e.target.value)}
-                            className="h-8 rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] px-2 text-xs text-[var(--text-primary)]"
+                            className="h-8 rounded-md border border-input bg-transparent px-2 text-xs text-foreground dark:bg-input/30"
                         >
                             {schools.map((s) => (
                                 <option key={s.id} value={s.id}>{s.name}</option>
@@ -130,7 +136,7 @@ export function LocationManager() {
 
             {/* Form Dialog */}
             <Dialog open={formOpen} onOpenChange={(v) => !v && closeForm()}>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>{editItem ? t("admin.location.editTitle") : t("admin.location.createTitle")}</DialogTitle>
                     </DialogHeader>
@@ -156,7 +162,7 @@ export function LocationManager() {
                             <select
                                 value={form.type}
                                 onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
-                                className="h-9 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] px-2 text-sm text-[var(--text-primary)]"
+                                className="h-9 w-full rounded-md border border-input bg-transparent px-2 text-sm text-foreground dark:bg-input/30"
                             >
                                 <option value="classroom">{t("admin.location.types.classroom")}</option>
                                 <option value="lab">{t("admin.location.types.lab")}</option>

@@ -13,7 +13,10 @@ export function ProtectedRoute({ requiredRole }: ProtectedRouteProps) {
         return <Navigate to="/login" replace />;
     }
 
-    if (requiredRole && user?.role !== requiredRole) {
+    const ADMIN_ROLES = ["admin", "owner"];
+    if (requiredRole === "admin" && !ADMIN_ROLES.includes(user?.role ?? "")) {
+        return <Navigate to="/dashboard" replace />;
+    } else if (requiredRole && requiredRole !== "admin" && user?.role !== requiredRole) {
         return <Navigate to="/dashboard" replace />;
     }
 

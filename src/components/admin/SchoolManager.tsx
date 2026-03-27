@@ -95,7 +95,7 @@ export function SchoolManager() {
                         </Button>
                     </SmartTooltip>
                     <SmartTooltip content={t("app.delete")} position="top">
-                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-red-400 hover:text-red-300" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
+                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive hover:text-destructive/80" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
                             <Trash2 size={14} />
                         </Button>
                     </SmartTooltip>
@@ -117,7 +117,7 @@ export function SchoolManager() {
 
             {/* Form Dialog */}
             <Dialog open={formOpen} onOpenChange={(v) => !v && closeForm()}>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>{editItem ? t("admin.school.editTitle") : t("admin.school.createTitle")}</DialogTitle>
                     </DialogHeader>

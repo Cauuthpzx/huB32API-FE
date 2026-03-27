@@ -96,7 +96,7 @@ export function TeacherManager() {
                         </Button>
                     </SmartTooltip>
                     <SmartTooltip content={t("app.delete")} position="top">
-                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-red-400 hover:text-red-300" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
+                        <Button type="button" variant="ghost" size="sm" className="h-7 w-7 p-0 text-destructive hover:text-destructive/80" onClick={(e) => { e.stopPropagation(); setDeleteItem(r); }}>
                             <Trash2 size={14} />
                         </Button>
                     </SmartTooltip>
@@ -118,7 +118,7 @@ export function TeacherManager() {
 
             {/* Form Dialog */}
             <Dialog open={formOpen} onOpenChange={(v) => !v && closeForm()}>
-                <DialogContent>
+                <DialogContent aria-describedby={undefined}>
                     <DialogHeader>
                         <DialogTitle>{editItem ? t("admin.teacher.editTitle") : t("admin.teacher.createTitle")}</DialogTitle>
                     </DialogHeader>
@@ -142,7 +142,7 @@ export function TeacherManager() {
                             <select
                                 value={form.role}
                                 onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))}
-                                className="h-9 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-elevated)] px-2 text-sm text-[var(--text-primary)]"
+                                className="h-9 w-full rounded-md border border-input bg-transparent px-2 text-sm text-foreground dark:bg-input/30"
                             >
                                 <option value="admin">{t("header.role.admin")}</option>
                                 <option value="teacher">{t("header.role.teacher")}</option>
